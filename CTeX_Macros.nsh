@@ -1,7 +1,6 @@
 !include "WordFunc.nsh"
 !include "Sections.nsh"
 !include "TextReplace.nsh"
-!include "EnvVarUpdate.nsh"
 !include "FileAssoc.nsh"
 !include "UninstByLog.nsh"
 !include "LogicLib_Ext.nsh"
@@ -28,44 +27,49 @@ Var SMCTEX
 !define CreateURLShortCut "!insertmacro _CreateURLShortCut"
 
 !macro _AppendPath DIR
-	SetDetailsPrint none
 	${If} ${UserIsAdmin}
-		${EnvVarUpdate} $R0 "PATH" "A" "HKLM" "${DIR}"
+		EnVar::SetHKLM
 	${Else}
-		${EnvVarUpdate} $R0 "PATH" "A" "HKCU" "${DIR}"
+		EnVar::SetHKCU
 	${EndIf}
-	SetDetailsPrint both
+	EnVar::AddValueEx "PATH" "${DIR}"
 !macroend
 !define AppendPath "!insertmacro _AppendPath"
 
 !macro _AddEnvVar NAME VALUE
 	${If} ${UserIsAdmin}
-		WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "${NAME}" "${VALUE}"
+		EnVar::SetHKLM
 	${Else}
-		WriteRegExpandStr HKCU "Environment" "${NAME}" "${VALUE}"
+		EnVar::SetHKCU
 	${EndIf}
+	EnVar::AddValueEx "${NAME}" "${VALUE}"
 !macroend
 !define AddEnvVar "!insertmacro _AddEnvVar"
 
 !macro _RemovePath UN DIR
-	SetDetailsPrint none
 	${If} ${UserIsAdmin}
-		${${UN}EnvVarUpdate} $R1 "PATH" "R" "HKLM" "${DIR}"
+		EnVar::SetHKLM
+		EnVar::DeleteValue "PATH" "${DIR}"
 	${EndIf}
-	${${UN}EnvVarUpdate} $R1 "PATH" "R" "HKCU" "${DIR}"
-	SetDetailsPrint both
+	EnVar::SetHKCU
+	EnVar::DeleteValue "PATH" "${DIR}"
 !macroend
 !define RemovePath '!insertmacro _RemovePath ""'
 !define un.RemovePath '!insertmacro _RemovePath "un."'
 
 !macro _RemoveEnvVar NAME
 	${If} ${UserIsAdmin}
-		DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "${NAME}"
+		EnVar::SetHKLM
+		EnVar::Delete "${NAME}"
 	${EndIf}
-	DeleteRegValue HKCU "Environment" "${NAME}"
+	EnVar::SetHKCU
+	EnVar::Delete "${NAME}"
 !macroend
 !define RemoveEnvVar "!insertmacro _RemoveEnvVar"
 
+${Using:StrFunc} StrTok
+${Using:StrFunc} UnStrTok
+!define un.StrTok '${UnStrTok}'
 !macro Define_Func_RemoveToken UN
 Function ${UN}RemoveToken
 	StrCpy $R9 ""
