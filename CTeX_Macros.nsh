@@ -166,6 +166,12 @@ FunctionEnd
 		${CreateURLShortCut} "$9\MiKTeX Project Page" "http://miktex.org/"
 		${CreateURLShortCut} "$9\Support" "http://miktex.org/support"
 
+		StrCpy $9 "$SMCTEX\Help"
+		CreateDirectory "$9"
+		CreateShortCut "$9\Symbols.lnk" "$0\doc\info\symbols\comprehensive\symbols-A4.pdf"
+		CreateShortCut "$9\UK TeX FAQ.lnk" "$0\doc\uk-tex-faq\html\index.html"
+		CreateShortCut "$9\LaTeX2e Reference Manual.lnk" "$0\doc\latex\help\latex2e.html"
+
 		DetailPrint "Update MiKTeX settings"
 		nsExec::Exec "$1\mpm.exe --register-components --quiet --admin"
 		nsExec::Exec "$1\initexmf.exe --force --mklinks --quiet --admin"
@@ -246,9 +252,8 @@ FunctionEnd
 		CreateDirectory "$9"
 		CreateShortCut "$9\CTeX FAQ.lnk" "$8\ctex-faq.pdf"
 		CreateShortCut "$9\Graphics.lnk" "$8\graphics.pdf"
-		CreateShortCut "$9\Symbols.lnk" "$8\symbols.pdf"
 		CreateShortCut "$9\Mathematics.lnk" "$8\ch8.pdf"
-		CreateShortCut "$9\LaTeX Short.lnk" "$8\lshort-cn.pdf"
+		CreateShortCut "$9\LaTeX Short.lnk" "$8\lshort-zh-cn.pdf"
 	${EndIf}
 !macroend
 
