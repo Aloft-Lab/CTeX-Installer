@@ -9,7 +9,7 @@
 !ifndef UnStrLoc_INCLUDED
 	${UnStrLoc}
 !endif
-!define un.StrLoc "${UnStrLoc}"
+!define un.StrLoc '${UnStrLoc}'
 
 
 !macro _Uninstall_Files Log_File
