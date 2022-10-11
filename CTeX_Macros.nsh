@@ -655,7 +655,7 @@ FunctionEnd
 		FileOpen $0 "${LogFile}" "r"
 		FileOpen $1 "${LogFile}.new" "w"
 		${Do}
-			FileRead $0 $9
+			FileReadUTF16LE $0 $9
 			${If} $9 == ""
 				${ExitDo}
 			${EndIf}
