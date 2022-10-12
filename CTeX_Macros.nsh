@@ -155,8 +155,18 @@ FunctionEnd
 		CreateShortCut "$9\LaTeX2e Reference Manual.lnk" "$0\doc\latex\help\latex2e.html"
 
 		DetailPrint "Update MiKTeX settings"
-		nsExec::Exec "$1\mpm.exe --register-components --quiet --admin"
-		nsExec::Exec "$1\initexmf.exe --force --mklinks --quiet --admin"
+		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fndb remove"
+		nsExec::Exec "$1\mpm.exe --register-components --admin --verbose"
+		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
+		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose links install --force"
+		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fontmaps configure"
+		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose languages configure"
+		nsExec::Exec "$1\initexmf.exe --default-paper-size=A4 --admin --disable-installer --verbose"
+		nsExec::Exec "$1\initexmf.exe --set-config-value=[MPM]AutoInstall=2 --admin --disable-installer --verbose"
+		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
+		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose filetypes register"
+		nsExec::Exec "$1\initexmf.exe --modify-path --admin --disable-installer --verbose"
+		nsExec::Exec "$1\initexmf.exe --report --admin --disable-installer --verbose"
 		nsExec::Exec "$1\yap.exe --register"
 	${EndIf}
 !macroend
