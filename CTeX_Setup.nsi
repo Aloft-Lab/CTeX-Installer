@@ -17,7 +17,7 @@
 Var UN_CONFIG_ONLY
 
 ; Main Install settings
-Name "${APP_NAME} ${APP_VERSION}"
+Name "${APP_NAME} ${APP_VERSION_STAGE}"
 BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 
 !ifndef BUILD_REPAIR

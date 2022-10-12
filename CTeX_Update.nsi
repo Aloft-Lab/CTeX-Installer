@@ -8,12 +8,12 @@ SetCompressorDictSize 32
 ; Functions and Macros
 !include "CTeX_Macros.nsh"
 
-!define Base_Version "2.9.1.160"
+!define Base_Version "3.0.0.0"
 
 ; Variables
 
 ; Main Install settings
-Name "${APP_NAME} ${APP_VERSION} Update"
+Name "${APP_NAME} ${APP_VERSION_STAGE} Update"
 BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 InstallDir "C:\CTEX"
 OutFile "CTeX_${APP_BUILD}_Update.exe"

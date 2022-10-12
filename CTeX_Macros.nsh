@@ -124,51 +124,29 @@ FunctionEnd
 		!insertmacro _Remove_MiKTeX_Roots
 
 		StrCpy $0 "$INSTDIR\${MiKTeX_Dir}"
-		StrCpy $1 "$0\miktex\bin"
+		StrCpy $1 "$0\miktex\bin\x64"
 
 		StrCpy $9 "Software\MiKTeX.org\MiKTeX\$MiKTeX"
-		WriteRegStr HKLM "$9\Core" "CommonInstall" "$0"
-		WriteRegStr HKLM "$9\Core" "CommonData" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM "$9\Core" "CommonConfig" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM "$9\Core" "UserData" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM "$9\Core" "UserConfig" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM "$9\Core" "UserInstall" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM "$9\MPM" "AutoInstall" "1"
-;		WriteRegStr HKLM "$9\MPM" "RemoteRepository" "ftp://ftp.ctex.org/mirrors/CTAN/systems/win32/miktex/tm/packages/"
-;		WriteRegStr HKLM "$9\MPM" "RepositoryType" "remote"
+		WriteRegStr HKLM64 "$9\Core" "SharedSetup" "1"
+		WriteRegStr HKLM64 "$9\Core" "CommonInstall" "$0"
+		WriteRegStr HKLM64 "$9\Core" "CommonData" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM64 "$9\Core" "CommonConfig" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM64 "$9\Core" "UserData" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM64 "$9\Core" "UserConfig" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM64 "$9\Core" "UserInstall" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM64 "$9\MPM" "AutoInstall" "2"
+;		WriteRegStr HKLM64 "$9\MPM" "RemoteRepository" "ftp://ftp.ctex.org/mirrors/CTAN/systems/win32/miktex/tm/packages/"
+;		WriteRegStr HKLM64 "$9\MPM" "RepositoryType" "remote"
+		WriteRegStr HKLM64 "$9\Setup" "Version" "22.7"
 
 		${AppendPath} "$INSTDIR\${UserData_Dir}\miktex\bin"
 		${AppendPath} "$1"
 
 ; ShortCuts
-		StrCpy $9 "$SMCTEX\MiKTeX"
+		StrCpy $9 "$SMCTEX"
 		CreateDirectory "$9"
-		CreateShortCut "$9\Previewer.lnk" "$1\yap.exe"
+		CreateShortCut "$9\MiKTeX Console.lnk" "$1\miktex-console.exe"
 		CreateShortCut "$9\TeXworks.lnk" "$1\miktex-texworks.exe"
-
-		StrCpy $9 "$SMCTEX\MiKTeX\Maintenance"
-		CreateDirectory "$9"
-		CreateShortCut "$9\Package Manager.lnk" "$1\mpm_mfc.exe"
-		CreateShortCut "$9\Settings.lnk" "$1\mo.exe"
-		CreateShortCut "$9\Update.lnk" "$1\internal\copystart.exe" '"$1\internal\miktex-update.exe"'
-
-		StrCpy $9 "$SMCTEX\MiKTeX\Maintenance (Admin)"
-		CreateDirectory "$9"
-		CreateShortCut "$9\Package Manager (Admin).lnk" "$1\mpm_mfc_admin.exe"
-		CreateShortCut "$9\Settings (Admin).lnk" "$1\mo_admin.exe"
-		CreateShortCut "$9\Update (Admin).lnk" "$1\internal\copystart_admin.exe" '"$1\internal\miktex-update_admin.exe"'
-
-		StrCpy $9 "$SMCTEX\MiKTeX\Help"
-		CreateDirectory "$9"
-		CreateShortCut "$9\FAQ.lnk" "$0\doc\miktex\faq.chm"
-		CreateShortCut "$9\Manual.lnk" "$0\doc\miktex\miktex.chm"
-
-		StrCpy $9 "$SMCTEX\MiKTeX\MiKTeX on the Web"
-		CreateDirectory "$9"
-		${CreateURLShortCut} "$9\Give back" "http://miktex.org/giveback"
-		${CreateURLShortCut} "$9\Known Issues" "http://miktex.org/2.8/issues"
-		${CreateURLShortCut} "$9\MiKTeX Project Page" "http://miktex.org/"
-		${CreateURLShortCut} "$9\Support" "http://miktex.org/support"
 
 		StrCpy $9 "$SMCTEX\Help"
 		CreateDirectory "$9"
@@ -209,14 +187,14 @@ FunctionEnd
 		StrCpy $0 "$INSTDIR\${Addons_Dir}"
 
 		StrCpy $9 "Software\MiKTeX.org\MiKTeX\$MiKTeX\Core"
-		ReadRegStr $R0 HKLM "$9" "CommonRoots"
+		ReadRegStr $R0 HKLM64 "$9" "CommonRoots"
 		${If} $R0 == ""
-			WriteRegStr HKLM "$9" "CommonRoots" "$0"
+			WriteRegStr HKLM64 "$9" "CommonRoots" "$0"
 		${Else}
 			StrCpy $R1 "$0"
 			StrCpy $R2 ";"
 			Call RemoveToken
-			WriteRegStr HKLM "$9" "CommonRoots" "$0;$R9"
+			WriteRegStr HKLM64 "$9" "CommonRoots" "$0;$R9"
 		${EndIf}
 
 		${AppendPath} "$0\ctex\bin"
@@ -268,12 +246,12 @@ FunctionEnd
 		StrCpy $0 "$UN_INSTDIR\${Addons_Dir}"
 	
 		StrCpy $9 "Software\MiKTeX.org\MiKTeX\$UN_MiKTeX\Core"
-		ReadRegStr $R0 HKLM "$9" "Roots"
+		ReadRegStr $R0 HKLM64 "$9" "Roots"
 		${If} $R0 != ""
 			StrCpy $R1 "$0"
 			StrCpy $R2 ";"
 			Call ${UN}RemoveToken
-			WriteRegStr HKLM "$9" "Roots" "$R9"
+			WriteRegStr HKLM64 "$9" "Roots" "$R9"
 		${EndIf}
 
 		${${UN}RemovePath} "$0\ctex\bin"
@@ -395,7 +373,7 @@ FunctionEnd
 		CreateShortCut "$9\WinEdt.lnk" "$INSTDIR\${WinEdt_Dir}\WinEdt.exe"
 
 		${If} $MiKTeX != ""
-			WriteRegStr HKCU "Software\MiKTeX.org\MiKTeX\$MiKTeX\Yap\Settings" "Editor" '$INSTDIR\${WinEdt_Dir}\winedt.exe "[Open(|%f|);SelPar(%l,8)]"'
+			WriteRegStr HKCU64 "Software\MiKTeX.org\MiKTeX\$MiKTeX\Yap\Settings" "Editor" '$INSTDIR\${WinEdt_Dir}\winedt.exe "[Open(|%f|);SelPar(%l,8)]"'
 			CreateDirectory "$INSTDIR\${UserData_Dir}\miktex\config"
 			WriteINIStr "$INSTDIR\${UserData_Dir}\miktex\config\yap.ini" "Settings" "Editor" '$INSTDIR\${WinEdt_Dir}\winedt.exe "[Open(|%f|);SelPar(%l,8)]"'
 		${EndIf}

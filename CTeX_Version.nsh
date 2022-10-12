@@ -5,8 +5,9 @@
 !define APP_NAME "CTeX"
 !define APP_COMPANY "CTEX.ORG"
 !define APP_COPYRIGHT "Copyright (C) 2000-2022 ${APP_COMPANY}"
-!define APP_VERSION "2.9.2"
-!define APP_BUILD "${APP_VERSION}.${BUILD_NUMBER}"
+!define APP_VERSION "3.0"
+!define APP_STAGE "0" ; 0 - alpha, 1 - beta, 2 - release
+!define APP_BUILD "${APP_VERSION}.${BUILD_NUMBER}.${APP_STAGE}"
 
 ; Components information
 !define MiKTeX_Dir          "MiKTeX"
@@ -22,13 +23,23 @@
 !define UserData_Dir        "UserData"
 
 
+!if ${APP_STAGE} == "0"
+	!define APP_VERSION_STAGE "${APP_VERSION}-alpha"
+!else if ${APP_STAGE} == "1"
+	!define APP_VERSION_STAGE "${APP_VERSION}-beta"
+!else
+	!define APP_VERSION_STAGE "${APP_VERSION}"
+!endif
+
 !macro Set_Version_Information
 	VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "ProductName" "${APP_NAME}"
+	VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "ProductVersion" "${APP_VERSION_STAGE}"
 	VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "CompanyName" "${APP_COMPANY}"
 	VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "FileDescription" "中文TeX套装"
 	VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "FileVersion" "${APP_BUILD}"
 	VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "LegalCopyright" "${APP_COPYRIGHT}"
 	VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${APP_NAME}"
+	VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${APP_VERSION_STAGE}"
 	VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${APP_COMPANY}"
 	VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Chinese TeX Suite"
 	VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APP_BUILD}"
