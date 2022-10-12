@@ -136,8 +136,8 @@ FunctionEnd
 		WriteRegStr HKLM64 "$9\Core" "UserConfig" "$INSTDIR\${UserData_Dir}"
 		WriteRegStr HKLM64 "$9\Core" "UserInstall" "$INSTDIR\${UserData_Dir}"
 		WriteRegStr HKLM64 "$9\MPM" "AutoInstall" "2"
-;		WriteRegStr HKLM64 "$9\MPM" "RemoteRepository" "ftp://ftp.ctex.org/mirrors/CTAN/systems/win32/miktex/tm/packages/"
-;		WriteRegStr HKLM64 "$9\MPM" "RepositoryType" "remote"
+		WriteRegStr HKLM64 "$9\MPM" "LastAdminUpdateDb" "1665591895"
+		WriteRegStr HKLM64 "$9\MPM" "LastAdminUpdateCheck" "1665591902"
 		WriteRegStr HKLM64 "$9\Setup" "Version" "22.7"
 
 		${AppendPath} "$INSTDIR\${UserData_Dir}\miktex\bin"
