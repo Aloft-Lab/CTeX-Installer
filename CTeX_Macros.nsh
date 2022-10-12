@@ -4,6 +4,7 @@
 !include "FileAssoc.nsh"
 !include "UninstByLog.nsh"
 !include "LogicLib_Ext.nsh"
+!include "x64.nsh"
 
 ; Variables
 Var Version
@@ -432,12 +433,12 @@ FunctionEnd
 	WriteRegStr HKLM "$9" "URLInfoAbout" "http://www.ctex.org"
 	WriteRegStr HKLM "$9" "UninstallString" "$INSTDIR\Uninstall.exe"
 
-	StrCpy $9 "$INSTDIR\${MiKTeX_Dir}\miktex\bin"
+	StrCpy $9 "$INSTDIR\${MiKTeX_Dir}\miktex\bin\x64"
 	DetailPrint "Update MiKTeX file name database"
-	nsExec::Exec "$9\initexmf.exe --update-fndb --quiet --admin"
-	nsExec::Exec "$9\initexmf.exe --update-fndb --quiet"
+	nsExec::Exec "$9\miktex.exe --admin --disable-installer --verbose fndb refresh"
+	nsExec::Exec "$9\miktex.exe --disable-installer --verbose fndb refresh"
 	DetailPrint "Update MiKTeX updmap database"
-	nsExec::Exec "$9\initexmf.exe --mkmaps --quiet --admin"
+	nsExec::Exec "$9\miktex.exe --admin --disable-installer --verbose fontmaps configure"
 
 	!insertmacro UPDATEFILEASSOC
 !macroend
@@ -662,6 +663,13 @@ FunctionEnd
 		FileClose $0
 		Delete "${LogFile}"
 		Rename "${LogFile}.new" "${LogFile}"
+	${EndIf}
+!macroend
+
+!macro Check_Windows_X64
+	${IfNot} ${RunningX64}
+		MessageBox MB_OK|MB_ICONSTOP "$(Msg_WindowsX64Required)"
+		Abort
 	${EndIf}
 !macroend
 

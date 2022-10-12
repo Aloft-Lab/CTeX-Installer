@@ -230,6 +230,7 @@ FunctionEnd
 
 Function onMUIInit
 
+	!insertmacro Check_Windows_X64
 	!insertmacro Check_Obsolete_Version
 	!insertmacro Check_Update_Version
 	!insertmacro Check_Admin_Rights
@@ -306,6 +307,8 @@ LangString Desc_WinEdt ${LANG_ENGLISH} "WinEdt a well designed text editor with 
 LangString Desc_File ${LANG_SIMPCHINESE} "文档"
 LangString Desc_File ${LANG_ENGLISH} "File"
 
+LangString Msg_WindowsX64Required ${LANG_SIMPCHINESE} "安装本程序需要64位Windows操作系统！"
+LangString Msg_WindowsX64Required ${LANG_ENGLISH} "The 64-bit version of Windows is required to install the program!"
 LangString Msg_AdminRequired ${LANG_SIMPCHINESE} "安装本程序需要管理员权限！"
 LangString Msg_AdminRequired ${LANG_ENGLISH} "Adminstrator rights are required to install the program!"
 LangString Msg_ObsoleteVersion ${LANG_SIMPCHINESE} "在系统中发现旧版的CTeX，请先卸载！"
