@@ -107,12 +107,8 @@ Section
 	
 	nsExec::Exec "$INSTDIR\Repair.exe /S"
 
-; Update MiKTeX
-	DetailPrint "Update MiKTeX"
-	${If} $MiKTeX != ""
-		MessageBox MB_YESNO|MB_ICONQUESTION "$(Msg_UpdateMiKTeX)" /SD IDNO IDNO +2
-		nsExec::Exec '"$INSTDIR\${MiKTeX_Dir}\miktex\bin\internal\copystart_admin.exe" "$INSTDIR\${MiKTeX_Dir}\miktex\bin\internal\miktex-update_admin.exe"'
-	${EndIf}
+	!insertmacro Update_MiKTeX_Packages
+
 SectionEnd
 
 ; On initialization

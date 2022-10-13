@@ -129,7 +129,6 @@ FunctionEnd
 
 		StrCpy $9 "Software\MiKTeX.org\MiKTeX\$MiKTeX"
 		WriteRegStr HKLM64 "$9\Core" "SharedSetup" "1"
-		WriteRegStr HKLM64 "$9\Core" "AutoAdmin" "1"
 		WriteRegStr HKLM64 "$9\Core" "CommonInstall" "$0"
 		WriteRegStr HKLM64 "$9\Core" "CommonData" "$INSTDIR\${UserData_Dir}"
 		WriteRegStr HKLM64 "$9\Core" "CommonConfig" "$INSTDIR\${UserData_Dir}"
@@ -166,8 +165,6 @@ FunctionEnd
 		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
 		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose filetypes register"
 		nsExec::Exec "$1\initexmf.exe --default-paper-size=A4 --admin --disable-installer --verbose"
-		nsExec::Exec "$1\initexmf.exe --modify-path --admin --disable-installer --verbose"
-		nsExec::Exec "$1\initexmf.exe --report --admin --disable-installer --verbose"
 		nsExec::Exec "$1\yap.exe --register"
 	${EndIf}
 !macroend
@@ -686,4 +683,12 @@ FunctionEnd
 	${EndIf}
 	StrCpy $SMCTEX "$SMPROGRAMS\CTeX"
 	SetShellVarContext current
+!macroend
+
+!macro Update_MiKTeX_Packages
+	DetailPrint "Update MiKTeX packages"
+	${If} $MiKTeX != ""
+		MessageBox MB_YESNO|MB_ICONQUESTION "$(Msg_UpdateMiKTeX)" /SD IDNO IDNO +2
+		nsExec::Exec "$INSTDIR\${MiKTeX_Dir}\miktex\bin\x64\miktex.exe --admin --disable-installer --verbose packages update"
+	${EndIf}
 !macroend

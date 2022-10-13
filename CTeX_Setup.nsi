@@ -172,6 +172,8 @@ Section -FinishSection
 	CreateDirectory "$SMCTEX"
 	CreateShortCut "$SMCTEX\Uninstall CTeX.lnk" "$INSTDIR\Uninstall.exe"
 
+	!insertmacro Update_MiKTeX_Packages
+
 SectionEnd
 
 ; Modern install component descriptions
@@ -321,5 +323,7 @@ LangString Msg_RemoveInstDir ${LANG_SIMPCHINESE} "是否完全删除安装目录
 LangString Msg_RemoveInstDir ${LANG_ENGLISH} "Remove all files in the installed diretory?"
 LangString Msg_FontSetup ${LANG_SIMPCHINESE} "是否运行中文字体安装程序？"
 LangString Msg_FontSetup ${LANG_ENGLISH} "Run the Chinese font setup program?"
+LangString Msg_UpdateMiKTeX ${LANG_SIMPCHINESE} "是否在线更新MiKTeX？"
+LangString Msg_UpdateMiKTeX ${LANG_ENGLISH} "Update MiKTeX through Internet?"
 
 ; eof
