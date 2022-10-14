@@ -151,12 +151,6 @@ FunctionEnd
 		CreateShortCut "$9\MiKTeX Console.lnk" "$1\miktex-console.exe"
 		CreateShortCut "$9\TeXworks.lnk" "$1\miktex-texworks.exe"
 
-		StrCpy $9 "$SMCTEX\Help"
-		CreateDirectory "$9"
-		CreateShortCut "$9\Symbols.lnk" "$0\doc\info\symbols\comprehensive\symbols-A4.pdf"
-		CreateShortCut "$9\UK TeX FAQ.lnk" "$0\doc\uk-tex-faq\html\index.html"
-		CreateShortCut "$9\LaTeX2e Reference Manual.lnk" "$0\doc\latex\help\latex2e.html"
-
 		DetailPrint "Update MiKTeX settings"
 		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fndb remove"
 		nsExec::ExecToLog "$1\mpm.exe --register-components --admin --verbose"
@@ -185,8 +179,6 @@ FunctionEnd
 		${${UN}RemovePath} "$APPDATA\MiKTeX\$UN_MiKTeX\miktex\bin"
 
 		!insertmacro _Remove_MiKTeX_Roots
-		
-		RMDir /r "$SMCTEX\MiKTeX"
 	${EndIf}
 !macroend
 
@@ -235,17 +227,6 @@ FunctionEnd
 		FileWrite $R0 "simsun.ttc$\r$\nsimyou.ttf$\r$\nsimsun.ttc$\r$\nsimsun.ttc$\r$\nsimsun.ttc$\r$\nsimli.ttf$\r$\nsimsun.ttc$\r$\nsimsun.ttc$\r$\n"
 		FileWrite $R0 "0$\r$\n0$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n$\r$\n0$\r$\n0$\r$\n0$\r$\n0$\r$\n0$\r$\n"
 		FileClose $R0
-
-; ShortCuts
-		CreateShortCut "$SMCTEX\FontSetup.lnk" "$0\ctex\bin\FontSetup.exe"
-
-		StrCpy $9 "$SMCTEX\Help"
-		StrCpy $8 "$0\ctex\doc"
-		CreateDirectory "$9"
-		CreateShortCut "$9\CTeX FAQ.lnk" "$8\ctex-faq.pdf"
-		CreateShortCut "$9\Graphics.lnk" "$8\graphics.pdf"
-		CreateShortCut "$9\Mathematics.lnk" "$8\ch8.pdf"
-		CreateShortCut "$9\LaTeX Short.lnk" "$8\lshort-zh-cn.pdf"
 	${EndIf}
 !macroend
 
@@ -273,10 +254,6 @@ FunctionEnd
 
 ; Uninstall TY
 		${${UN}RemovePath} "$0\ty\bin"
-
-; Uninstall ShortCuts
-		Delete "$SMCTEX\FontSetup.lnk"
-		RMDir /r "$SMCTEX\Help"
 	${EndIf}
 !macroend
 
@@ -292,12 +269,6 @@ FunctionEnd
 		WriteRegStr HKLM "$9" "GS_LIB" "$1\lib;$0\fonts;$FONTS"
 	
 		${AppendPath} "$1\bin"
-	
-; ShortCuts
-		StrCpy $9 "$SMCTEX\Ghostcript"
-		CreateDirectory "$9"
-		CreateShortCut "$9\Ghostscript.lnk" "$1\bin\gswin32.exe" '"-I$1\lib;$0\fonts;$FONTS"'
-		CreateShortCut "$9\Ghostscript Readme.lnk" "$1\doc\Readme.htm"
 	${EndIf}
 !macroend
 
@@ -308,8 +279,6 @@ FunctionEnd
 		DeleteRegKey HKLM "Software\GPL Ghostscript"
 	
 		${${UN}RemovePath} "$UN_INSTDIR\${Ghostscript_Dir}\gs$UN_Ghostscript\bin"
-
-		RMDir /r "$SMCTEX\Ghostscript"
 	${EndIf}
 !macroend
 
@@ -337,12 +306,6 @@ FunctionEnd
 		StrCpy $9 "$0\gsview\gsview32.exe"
 		!insertmacro APP_ASSOCIATE "ps" "CTeX.PS" "PS $(Desc_File)" "$9,3" "Open with GSview" '$9 "%1"'
 		!insertmacro APP_ASSOCIATE "eps" "CTeX.EPS" "EPS $(Desc_File)" "$9,3" "Open with GSview" '$9 "%1"'
-	
-; ShortCuts
-		StrCpy $9 "$SMCTEX\Ghostgum"
-		CreateDirectory "$9"
-		CreateShortCut "$9\GSview.lnk" "$0\gsview\gsview32.exe"
-		CreateShortCut "$9\GSview Readme.lnk" "$0\gsview\Readme.htm"
 	${EndIf}
 !macroend
 
@@ -356,8 +319,6 @@ FunctionEnd
 	
 		!insertmacro APP_UNASSOCIATE "ps" "CTeX.PS"
 		!insertmacro APP_UNASSOCIATE "eps" "CTeX.EPS"
-
-		RMDir /r "$SMCTEX\Ghostgum"
 	${EndIf}
 !macroend
 
