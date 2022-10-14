@@ -421,7 +421,7 @@ FunctionEnd
 	LogSet on
 	File /r "${Files}"
 	LogSet off
-	!insertmacro Save_Compressed_Log "${Log_File}"
+	!insertmacro Save_Compressed_Log "$INSTDIR\${Logs_Dir}\${Log_File}"
 !macroend
 !define Install_Files "!insertmacro _Install_Files"
 
@@ -433,7 +433,7 @@ FunctionEnd
 
 !macro _End_Install_Files Log_File
 	LogSet off
-	!insertmacro Save_Compressed_Log "${Log_File}"
+	!insertmacro Save_Compressed_Log "$INSTDIR\${Logs_Dir}\${Log_File}"
 !macroend
 !define End_Install_Files "!insertmacro _End_Install_Files"
 
@@ -613,13 +613,12 @@ FunctionEnd
 
 !macro Save_Compressed_Log LogFile
 	StrCpy $0 "$INSTDIR\install.log"
-	StrCpy $1 "$INSTDIR\${Logs_Dir}\${LogFile}"
 	${If} ${FileExists} $0
-		Delete "$1"
-		Rename "$0" "$1"
-		unicode::FileUnicode2UTF8 "$1" "$1" "UTF-16LE"
 		DetailPrint "Compress install log: ${LogFile}"
-		${LineFind} "$1" "" "1:-1" "Compress_Log_Line"
+		Delete "${LogFile}"
+		Rename "$0" "${LogFile}"
+		unicode::FileUnicode2UTF8 "${LogFile}" "${LogFile}" "UTF-16LE"
+		${LineFind} "${LogFile}" "" "1:-1" "Compress_Log_Line"
 	${EndIf}
 !macroend
 

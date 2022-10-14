@@ -30,6 +30,7 @@ BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 !endif
 
 !ifdef BUILD_REPAIR
+	Name "${APP_NAME} ${APP_VERSION_STAGE} Repair"
 	InstallDir "$EXEDIR"
 	OutFile "Repair.exe"
 !endif
