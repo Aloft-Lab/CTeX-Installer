@@ -1,6 +1,6 @@
+!include "TextFunc.nsh"
 !include "WordFunc.nsh"
 !include "Sections.nsh"
-!include "TextReplace.nsh"
 !include "FileAssoc.nsh"
 !include "UninstByLog.nsh"
 !include "LogicLib_Ext.nsh"
@@ -611,15 +611,19 @@ FunctionEnd
 	${EndIf}
 !macroend
 
+Function Update_Log_Line
+	${WordReplace} '$R9' '$R0' '$R1' '+*' $R9
+	Push $0
+FunctionEnd
+
 !macro Update_Log LogFile
 	${If} ${FileExists} ${LogFile}
 		ReadINIStr $R0 "$INSTDIR\${Logs_Dir}\install.ini" "CTeX" "Install"
 		${If} $R0 != ""
+		${AndIf} $R0 != "$INSTDIR"
 			DetailPrint "Update install log: ${LogFile}"
-			${textreplace::ReplaceInFile} "${LogFile}" "${LogFile}.new" "$R0" "$INSTDIR" "/S=1" $R1
-			${textreplace::Unload}
-			Delete "${LogFile}"
-			Rename "${LogFile}.new" "${LogFile}"
+			StrCpy $R1 "$INSTDIR"
+			${LineFind} "${LogFile}" "" "1:-1" "Update_Log_Line"
 		${EndIf}
 	${EndIf}
 !macroend
