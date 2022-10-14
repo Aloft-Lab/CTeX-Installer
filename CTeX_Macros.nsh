@@ -460,9 +460,7 @@ FunctionEnd
 	LogSet on
 	File /r "${Files}"
 	LogSet off
-	Delete "$INSTDIR\${Logs_Dir}\${Log_File}"
-	Rename "$INSTDIR\install.log" "$INSTDIR\${Logs_Dir}\${Log_File}"
-	!insertmacro Compress_Log "$INSTDIR\${Logs_Dir}\${Log_File}"
+	!insertmacro Save_Compressed_Log "${Log_File}"
 !macroend
 !define Install_Files "!insertmacro _Install_Files"
 
@@ -474,9 +472,7 @@ FunctionEnd
 
 !macro _End_Install_Files Log_File
 	LogSet off
-	Delete "$INSTDIR\${Logs_Dir}\${Log_File}"
-	Rename "$INSTDIR\install.log" "$INSTDIR\${Logs_Dir}\${Log_File}"
-	!insertmacro Compress_Log "$INSTDIR\${Logs_Dir}\${Log_File}"
+	!insertmacro Save_Compressed_Log "${Log_File}"
 !macroend
 !define End_Install_Files "!insertmacro _End_Install_Files"
 
@@ -641,31 +637,28 @@ FunctionEnd
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_miktex.log"
 !macroend
 
-!macro Compress_Log LogFile
-	${If} ${FileExists} ${LogFile}
+Function Compress_Log_Line
+	StrCpy $R0 $R9 11
+	${If} $R0 == "File: overw"
+		StrCpy $0 "SkipWrite"
+	${ElseIf} $R0 == "CreateDirec"
+		StrCpy $R1 $R9 7 -9
+		${If} $R1 == "created"
+			StrCpy $0 "SkipWrite" 
+		${EndIf}
+	${EndIf}
+	Push $0
+FunctionEnd
+
+!macro Save_Compressed_Log LogFile
+	StrCpy $0 "$INSTDIR\install.log"
+	StrCpy $1 "$INSTDIR\${Logs_Dir}\${LogFile}"
+	${If} ${FileExists} $0
+		Delete "$1"
+		Rename "$0" "$1"
+		unicode::FileUnicode2UTF8 "$1" "$1" "UTF-16LE"
 		DetailPrint "Compress install log: ${LogFile}"
-		FileOpen $0 "${LogFile}" "r"
-		FileOpen $1 "${LogFile}.new" "w"
-		${Do}
-			FileReadUTF16LE $0 $9
-			${If} $9 == ""
-				${ExitDo}
-			${EndIf}
-			StrCpy $8 $9 11
-			${If} $8 == "File: overw"
-				${Continue}
-			${EndIf}
-			StrCpy $7 $9 7 -9
-			${If} $8 == "CreateDirec"
-			${AndIf} $7 == "created"
-				${Continue}
-			${EndIf}
-			FileWrite $1 "$9"
-		${Loop}
-		FileClose $1
-		FileClose $0
-		Delete "${LogFile}"
-		Rename "${LogFile}.new" "${LogFile}"
+		${LineFind} "$1" "" "1:-1" "Compress_Log_Line"
 	${EndIf}
 !macroend
 
