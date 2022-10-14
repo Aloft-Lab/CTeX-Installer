@@ -175,12 +175,12 @@ FunctionEnd
 	${If} $UN_MiKTeX != ""
 		DetailPrint "Uninstall MiKTeX configs"
 
-		nsExec::Exec "$UN_INSTDIR\${MiKTeX_Dir}\miktex\bin\mpm.exe --unregister-components --quiet --admin"
+		nsExec::Exec "$UN_INSTDIR\${MiKTeX_Dir}\miktex\bin\x64\mpm.exe --unregister-components --admin --verbose"
 
-		DeleteRegKey HKLM "Software\MiKTeX.org"
-		DeleteRegKey HKCU "Software\MiKTeX.org"
+		DeleteRegKey HKLM64 "Software\MiKTeX.org"
+		DeleteRegKey HKCU64 "Software\MiKTeX.org"
 
-		${${UN}RemovePath} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\bin"
+		${${UN}RemovePath} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\bin\x64"
 		${${UN}RemovePath} "$UN_INSTDIR\${UserData_Dir}\miktex\bin"
 		${${UN}RemovePath} "$APPDATA\MiKTeX\$UN_MiKTeX\miktex\bin"
 
