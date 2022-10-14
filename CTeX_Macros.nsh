@@ -33,6 +33,7 @@ Var SMCTEX
 	${Else}
 		EnVar::SetHKCU
 	${EndIf}
+	EnVar::DeleteValue "PATH" "${DIR}"
 	EnVar::AddValueEx "PATH" "${DIR}"
 !macroend
 !define AppendPath "!insertmacro _AppendPath"
@@ -43,6 +44,7 @@ Var SMCTEX
 	${Else}
 		EnVar::SetHKCU
 	${EndIf}
+	EnVar::Delete "${NAME}"
 	EnVar::AddValueEx "${NAME}" "${VALUE}"
 !macroend
 !define AddEnvVar "!insertmacro _AddEnvVar"
