@@ -158,16 +158,16 @@ FunctionEnd
 		CreateShortCut "$9\LaTeX2e Reference Manual.lnk" "$0\doc\latex\help\latex2e.html"
 
 		DetailPrint "Update MiKTeX settings"
-		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fndb remove"
-		nsExec::Exec "$1\mpm.exe --register-components --admin --verbose"
-		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
-		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose links install --force"
-		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fontmaps configure"
-		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose languages configure"
-		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
-		nsExec::Exec "$1\miktex.exe --admin --disable-installer --verbose filetypes register"
-		nsExec::Exec "$1\initexmf.exe --default-paper-size=A4 --admin --disable-installer --verbose"
-		nsExec::Exec "$1\yap.exe --register"
+		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fndb remove"
+		nsExec::ExecToLog "$1\mpm.exe --register-components --admin --verbose"
+		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
+		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose links install --force"
+		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fontmaps configure"
+		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose languages configure"
+		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
+		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose filetypes register"
+		nsExec::ExecToLog "$1\initexmf.exe --default-paper-size=A4 --admin --disable-installer --verbose"
+		nsExec::ExecToLog "$1\yap.exe --register"
 	${EndIf}
 !macroend
 
@@ -175,7 +175,7 @@ FunctionEnd
 	${If} $UN_MiKTeX != ""
 		DetailPrint "Uninstall MiKTeX configs"
 
-		nsExec::Exec "$UN_INSTDIR\${MiKTeX_Dir}\miktex\bin\x64\mpm.exe --unregister-components --admin --verbose"
+		nsExec::ExecToLog "$UN_INSTDIR\${MiKTeX_Dir}\miktex\bin\x64\mpm.exe --unregister-components --admin --verbose"
 
 		DeleteRegKey HKLM64 "Software\MiKTeX.org"
 		DeleteRegKey HKCU64 "Software\MiKTeX.org"
@@ -219,7 +219,7 @@ FunctionEnd
 		FileWrite $R0 "-H$0\tex\latex\cct$\n"
 		FileClose $R0
 	
-		nsExec::Exec "$0\cct\bin\cctinit.exe"
+		nsExec::ExecToLog "$0\cct\bin\cctinit.exe"
 
 ; Install TY
 		${AppendPath} "$0\ty\bin"
@@ -434,10 +434,10 @@ FunctionEnd
 
 	StrCpy $9 "$INSTDIR\${MiKTeX_Dir}\miktex\bin\x64"
 	DetailPrint "Update MiKTeX file name database"
-	nsExec::Exec "$9\miktex.exe --admin --disable-installer --verbose fndb refresh"
-	nsExec::Exec "$9\miktex.exe --disable-installer --verbose fndb refresh"
+	nsExec::ExecToLog "$9\miktex.exe --admin --disable-installer --verbose fndb refresh"
+	nsExec::ExecToLog "$9\miktex.exe --disable-installer --verbose fndb refresh"
 	DetailPrint "Update MiKTeX updmap database"
-	nsExec::Exec "$9\miktex.exe --admin --disable-installer --verbose fontmaps configure"
+	nsExec::ExecToLog "$9\miktex.exe --admin --disable-installer --verbose fontmaps configure"
 
 	!insertmacro UPDATEFILEASSOC
 !macroend
@@ -695,6 +695,6 @@ FunctionEnd
 	DetailPrint "Update MiKTeX packages"
 	${If} $MiKTeX != ""
 		MessageBox MB_YESNO|MB_ICONQUESTION "$(Msg_UpdateMiKTeX)" /SD IDNO IDNO +2
-		nsExec::Exec "$INSTDIR\${MiKTeX_Dir}\miktex\bin\x64\miktex.exe --admin --disable-installer --verbose packages update"
+		nsExec::ExecToLog "$INSTDIR\${MiKTeX_Dir}\miktex\bin\x64\miktex.exe --admin --disable-installer --verbose packages update"
 	${EndIf}
 !macroend

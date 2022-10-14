@@ -105,7 +105,7 @@ Section
 
 	!insertmacro Save_Install_Information
 	
-	nsExec::Exec "$INSTDIR\Repair.exe /S"
+	nsExec::ExecToLog "$INSTDIR\Repair.exe /S"
 
 	!insertmacro Update_MiKTeX_Packages
 
