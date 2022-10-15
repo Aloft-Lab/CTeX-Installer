@@ -12,6 +12,8 @@
 ; Components information
 !define MiKTeX_Dir          "MiKTeX"
 !define MiKTeX_Version      "2.9"
+!define MiKTeX_Setup64      "22.7"
+!define MiKTeX_Setup32      "21.6"
 !define Addons_Dir          "CTeX"
 !define Ghostscript_Dir     "Ghostscript"
 !define Ghostscript_Version "9.05"
@@ -48,13 +50,13 @@
 !macroend
 
 !macro Check_Obsolete_Version
-	ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\{7AB19E08-582F-4996-BB5D-7287222D25ED}" "UninstallString"
+	ReadRegStr $R0 HKLM32 "Software\Microsoft\Windows\CurrentVersion\Uninstall\{7AB19E08-582F-4996-BB5D-7287222D25ED}" "UninstallString"
 	${If} $R0 != ""
 		MessageBox MB_OK|MB_ICONSTOP "$(Msg_ObsoleteVersion)"
 		Abort
 	${EndIf}
 
-	ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "UninstallString"
+	ReadRegStr $R0 HKLM32 "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "UninstallString"
 	${If} $R0 != ""
 		${If} $UN_INSTDIR == ""
 		${OrIf} $UN_Version == ""

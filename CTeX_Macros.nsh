@@ -21,6 +21,8 @@ Var UN_Ghostscript
 Var UN_GSview
 Var UN_WinEdt
 Var SMCTEX
+Var BINDIR
+Var MiKTeX_Setup
 
 !macro _CreateURLShortCut URLFile URLSite
 	WriteINIStr "${URLFile}.URL" "InternetShortcut" "URL" "${URLSite}"
@@ -127,20 +129,20 @@ FunctionEnd
 		!insertmacro _Remove_MiKTeX_Roots
 
 		StrCpy $0 "$INSTDIR\${MiKTeX_Dir}"
-		StrCpy $1 "$0\miktex\bin\x64"
+		StrCpy $1 "$0\miktex\$BINDIR"
 
 		StrCpy $9 "Software\MiKTeX.org\MiKTeX\$MiKTeX"
-		WriteRegStr HKLM64 "$9\Core" "SharedSetup" "1"
-		WriteRegStr HKLM64 "$9\Core" "CommonInstall" "$0"
-		WriteRegStr HKLM64 "$9\Core" "CommonData" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM64 "$9\Core" "CommonConfig" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM64 "$9\Core" "UserInstall" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM64 "$9\Core" "UserData" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM64 "$9\Core" "UserConfig" "$INSTDIR\${UserData_Dir}"
-		WriteRegStr HKLM64 "$9\MPM" "AutoInstall" "1"
-		WriteRegStr HKLM64 "$9\MPM" "AutoAdmin" "1"
-		WriteRegStr HKLM64 "$9\MPM" "LastAdminUpdateCheck" "1660000000"
-		WriteRegStr HKLM64 "$9\Setup" "Version" "22.7"
+		WriteRegStr HKLM "$9\Core" "SharedSetup" "1"
+		WriteRegStr HKLM "$9\Core" "CommonInstall" "$0"
+		WriteRegStr HKLM "$9\Core" "CommonData" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM "$9\Core" "CommonConfig" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM "$9\Core" "UserInstall" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM "$9\Core" "UserData" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM "$9\Core" "UserConfig" "$INSTDIR\${UserData_Dir}"
+		WriteRegStr HKLM "$9\MPM" "AutoInstall" "1"
+		WriteRegStr HKLM "$9\MPM" "AutoAdmin" "1"
+		WriteRegStr HKLM "$9\MPM" "LastAdminUpdateCheck" "1660000000"
+		WriteRegStr HKLM "$9\Setup" "Version" "$MiKTeX_Setup"
 
 		${AppendPath} "$INSTDIR\${UserData_Dir}\miktex\bin"
 		${AppendPath} "$1"
@@ -169,12 +171,12 @@ FunctionEnd
 	${If} $UN_MiKTeX != ""
 		DetailPrint "Uninstall MiKTeX configs"
 
-		nsExec::ExecToLog "$UN_INSTDIR\${MiKTeX_Dir}\miktex\bin\x64\mpm.exe --unregister-components --admin --verbose"
+		nsExec::ExecToLog "$UN_INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR\mpm.exe --unregister-components --admin --verbose"
 
-		DeleteRegKey HKLM64 "Software\MiKTeX.org"
-		DeleteRegKey HKCU64 "Software\MiKTeX.org"
+		DeleteRegKey HKLM "Software\MiKTeX.org"
+		DeleteRegKey HKCU "Software\MiKTeX.org"
 
-		${${UN}RemovePath} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\bin\x64"
+		${${UN}RemovePath} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR"
 		${${UN}RemovePath} "$UN_INSTDIR\${UserData_Dir}\miktex\bin"
 		${${UN}RemovePath} "$APPDATA\MiKTeX\$UN_MiKTeX\miktex\bin"
 
@@ -189,14 +191,14 @@ FunctionEnd
 		StrCpy $0 "$INSTDIR\${Addons_Dir}"
 
 		StrCpy $9 "Software\MiKTeX.org\MiKTeX\$MiKTeX\Core"
-		ReadRegStr $R0 HKLM64 "$9" "CommonRoots"
+		ReadRegStr $R0 HKLM "$9" "CommonRoots"
 		${If} $R0 == ""
-			WriteRegStr HKLM64 "$9" "CommonRoots" "$0"
+			WriteRegStr HKLM "$9" "CommonRoots" "$0"
 		${Else}
 			StrCpy $R1 "$0"
 			StrCpy $R2 ";"
 			Call RemoveToken
-			WriteRegStr HKLM64 "$9" "CommonRoots" "$0;$R9"
+			WriteRegStr HKLM "$9" "CommonRoots" "$0;$R9"
 		${EndIf}
 
 		${AppendPath} "$0\ctex\bin"
@@ -237,12 +239,12 @@ FunctionEnd
 		StrCpy $0 "$UN_INSTDIR\${Addons_Dir}"
 	
 		StrCpy $9 "Software\MiKTeX.org\MiKTeX\$UN_MiKTeX\Core"
-		ReadRegStr $R0 HKLM64 "$9" "Roots"
+		ReadRegStr $R0 HKLM "$9" "Roots"
 		${If} $R0 != ""
 			StrCpy $R1 "$0"
 			StrCpy $R2 ";"
 			Call ${UN}RemoveToken
-			WriteRegStr HKLM64 "$9" "Roots" "$R9"
+			WriteRegStr HKLM "$9" "Roots" "$R9"
 		${EndIf}
 
 		${${UN}RemovePath} "$0\ctex\bin"
@@ -265,8 +267,8 @@ FunctionEnd
 		StrCpy $1 "$0\gs$Ghostscript"
 		
 		StrCpy $9 "Software\GPL Ghostscript\$Ghostscript"
-		WriteRegStr HKLM "$9" "GS_DLL" "$1\bin\gsdll32.dll"
-		WriteRegStr HKLM "$9" "GS_LIB" "$1\lib;$0\fonts;$FONTS"
+		WriteRegStr HKLM32 "$9" "GS_DLL" "$1\bin\gsdll32.dll"
+		WriteRegStr HKLM32 "$9" "GS_LIB" "$1\lib;$0\fonts;$FONTS"
 	
 		${AppendPath} "$1\bin"
 	${EndIf}
@@ -276,7 +278,7 @@ FunctionEnd
 	${If} $UN_Ghostscript != ""
 		DetailPrint "Uninstall Ghostscript configs"
 
-		DeleteRegKey HKLM "Software\GPL Ghostscript"
+		DeleteRegKey HKLM32 "Software\GPL Ghostscript"
 	
 		${${UN}RemovePath} "$UN_INSTDIR\${Ghostscript_Dir}\gs$UN_Ghostscript\bin"
 	${EndIf}
@@ -287,7 +289,7 @@ FunctionEnd
 		DetailPrint "Install GSview configs"
 
 		StrCpy $0 "$INSTDIR\${GSview_Dir}"
-		WriteRegStr HKLM "Software\Ghostgum\GSview" "$GSview" "$0"
+		WriteRegStr HKLM32 "Software\Ghostgum\GSview" "$GSview" "$0"
 	
 		StrCpy $9 "$0\gsview\gsview32.ini"
 		StrCpy $8 "GSview-$GSview"
@@ -313,7 +315,7 @@ FunctionEnd
 	${If} $UN_GSview != ""
 		DetailPrint "Uninstall GSview configs"
 
-		DeleteRegKey HKLM "Software\Ghostgum"
+		DeleteRegKey HKLM32 "Software\Ghostgum"
 	
 		${${UN}RemovePath} "$UN_INSTDIR\${GSview_Dir}\gsview"
 	
@@ -329,9 +331,9 @@ FunctionEnd
 		RMDir /r "$APPDATA\WinEdt"
 
 		StrCpy $0 "$INSTDIR\${WinEdt_Dir}"
-		WriteRegStr HKLM "Software\WinEdt" "Install Root" "$0"
-		WriteRegStr HKLM "Software\WinEdt" "AppData" "$0\Local"
-		WriteRegStr HKCU "Software\VB and VBA Program Settings\TexFriend\Options" "StartupByWinEdt" "False"
+		WriteRegStr HKLM32 "Software\WinEdt" "Install Root" "$0"
+		WriteRegStr HKLM32 "Software\WinEdt" "AppData" "$0\Local"
+		WriteRegStr HKCU32 "Software\VB and VBA Program Settings\TexFriend\Options" "StartupByWinEdt" "False"
 
 		${AppendPath} "$0"
 	
@@ -344,7 +346,7 @@ FunctionEnd
 		CreateShortCut "$9\WinEdt.lnk" "$INSTDIR\${WinEdt_Dir}\WinEdt.exe"
 
 		${If} $MiKTeX != ""
-			WriteRegStr HKCU64 "Software\MiKTeX.org\MiKTeX\$MiKTeX\Yap\Settings" "Editor" '$INSTDIR\${WinEdt_Dir}\winedt.exe "[Open(|%f|);SelPar(%l,8)]"'
+			WriteRegStr HKCU "Software\MiKTeX.org\MiKTeX\$MiKTeX\Yap\Settings" "Editor" '$INSTDIR\${WinEdt_Dir}\winedt.exe "[Open(|%f|);SelPar(%l,8)]"'
 			CreateDirectory "$INSTDIR\${UserData_Dir}\miktex\config"
 			WriteINIStr "$INSTDIR\${UserData_Dir}\miktex\config\yap.ini" "Settings" "Editor" '$INSTDIR\${WinEdt_Dir}\winedt.exe "[Open(|%f|);SelPar(%l,8)]"'
 		${EndIf}
@@ -355,8 +357,8 @@ FunctionEnd
 	${If} $UN_WinEdt != ""
 		DetailPrint "Uninstall WinEdt configs"
 
-		DeleteRegKey HKLM "Software\WinEdt"
-		DeleteRegKey HKCU "Software\VB and VBA Program Settings\TexFriend"
+		DeleteRegKey HKLM32 "Software\WinEdt"
+		DeleteRegKey HKCU32 "Software\VB and VBA Program Settings\TexFriend"
 	
 		${${UN}RemovePath} "$UN_INSTDIR\${WinEdt_Dir}"
 
@@ -389,11 +391,11 @@ FunctionEnd
 	WriteRegStr HKLM "$9" "DisplayIcon" "$INSTDIR\Uninstall.exe,0"
 	WriteRegStr HKLM "$9" "Publisher" "${APP_COMPANY}"
 	WriteRegStr HKLM "$9" "Readme" "$INSTDIR\Readme.txt"
-	WriteRegStr HKLM "$9" "HelpLink" "http://bbs.ctex.org"
+	WriteRegStr HKLM "$9" "HelpLink" "https://github.com/Aloft-Lab/CTeX-Installer/issues"
 	WriteRegStr HKLM "$9" "URLInfoAbout" "http://www.ctex.org"
 	WriteRegStr HKLM "$9" "UninstallString" "$INSTDIR\Uninstall.exe"
 
-	StrCpy $9 "$INSTDIR\${MiKTeX_Dir}\miktex\bin\x64"
+	StrCpy $9 "$INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR"
 	DetailPrint "Update MiKTeX file name database"
 	nsExec::ExecToLog "$9\miktex.exe --admin --disable-installer --verbose fndb refresh"
 	nsExec::ExecToLog "$9\miktex.exe --disable-installer --verbose fndb refresh"
@@ -623,9 +625,14 @@ FunctionEnd
 !macroend
 
 !macro Check_Windows_X64
-	${IfNot} ${RunningX64}
-		MessageBox MB_OK|MB_ICONSTOP "$(Msg_WindowsX64Required)"
-		Abort
+	${If} ${RunningX64}
+		SetRegView 64
+		StrCpy $BINDIR "bin\x64"
+		StrCpy $MiKTeX_Setup ${MiKTeX_Setup64}
+	${Else}
+		SetRegView 32
+		StrCpy $BINDIR "bin"
+		StrCpy $MiKTeX_Setup ${MiKTeX_Setup32}
 	${EndIf}
 !macroend
 
@@ -648,6 +655,6 @@ FunctionEnd
 	DetailPrint "Update MiKTeX packages"
 	${If} $MiKTeX != ""
 		MessageBox MB_YESNO|MB_ICONQUESTION "$(Msg_UpdateMiKTeX)" /SD IDNO IDNO +2
-		nsExec::ExecToLog "$INSTDIR\${MiKTeX_Dir}\miktex\bin\x64\miktex.exe --admin --disable-installer --verbose packages update"
+		nsExec::ExecToLog "$INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR\miktex.exe --admin --disable-installer --verbose packages update"
 	${EndIf}
 !macroend

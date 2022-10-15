@@ -5,7 +5,7 @@
 	SetCompressorDictSize 128
 !else
 	SetCompressor /FINAL /SOLID LZMA
-	SetCompressorDictSize 64
+	SetCompressorDictSize 128
 !endif
 
 !include "CTeX_Version.nsh"
@@ -83,9 +83,17 @@ Section "MiKTeX" Section_MiKTeX
 
 !ifndef BUILD_REPAIR
 !ifndef BUILD_FULL
-	${Install_Files} "MiKTeX.basic\*.*" "install_miktex.log"
+	${If} ${RunningX64}
+		${Install_Files} "MiKTeX.basic\*.*" "install_miktex.log"
+	${Else}
+		${Install_Files} "MiKTeX.basic-x86\*.*" "install_miktex.log"
+	${EndIf}
 !else
-	${Install_Files} "MiKTeX.full\*.*" "install_miktex.log"
+	${If} ${RunningX64}
+		${Install_Files} "MiKTeX.full\*.*" "install_miktex.log"
+	${Else}
+		${Install_Files} "MiKTeX.full-x86\*.*" "install_miktex.log"
+	${EndIf}
 !endif
 !endif
 
@@ -216,6 +224,8 @@ Function .onInit
 
 	!insertmacro MUI_LANGDLL_DISPLAY
 
+	!insertmacro Check_Windows_X64
+
 	!insertmacro Get_StartMenu_Dir
 	!insertmacro Get_Uninstall_Information
 	!insertmacro Restore_Install_Information
@@ -233,7 +243,6 @@ FunctionEnd
 
 Function onMUIInit
 
-	!insertmacro Check_Windows_X64
 	!insertmacro Check_Obsolete_Version
 	!insertmacro Check_Update_Version
 	!insertmacro Check_Admin_Rights

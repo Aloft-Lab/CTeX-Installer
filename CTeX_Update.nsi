@@ -116,6 +116,8 @@ Function .onInit
 
 	!insertmacro MUI_LANGDLL_DISPLAY
 
+	!insertmacro Check_Windows_X64
+
 	ReadRegStr $INSTDIR HKLM "Software\${APP_NAME}" "Install"
 	ReadRegStr $Version HKLM "Software\${APP_NAME}" "Version"
 
