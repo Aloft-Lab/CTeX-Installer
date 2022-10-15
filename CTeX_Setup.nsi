@@ -14,8 +14,8 @@
 !include "CTeX_Macros.nsh"
 
 ; Build settings
-!define INCLUDE_X64
-!define INCLUDE_X86
+!define Include_MiKTeX_x64
+!define Include_MiKTeX_x86
 
 ; Variables
 Var UN_CONFIG_ONLY
@@ -29,11 +29,11 @@ BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 !define OutFileS1
 !define OutFileS2
 !ifdef BUILD_X64_ONLY
-	!undef INCLUDE_X86
+	!undef Include_MiKTeX_x86
 	!define /redef OutFileS1 "_x64"
 !endif
 !ifdef BUILD_X86_ONLY
-	!undef INCLUDE_X64
+	!undef Include_MiKTeX_x64
 	!define /redef OutFileS1 "_x86"
 !endif
 !ifdef BUILD_FULL
@@ -93,31 +93,43 @@ Section -InitSection
 SectionEnd	
 
 Section "MiKTeX" Section_MiKTeX
+SectionEnd
 
+Section "-MiKTeX_x64" Section_MiKTeX_x64
+
+!ifdef Include_MiKTeX_x64
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
 
 !ifndef BUILD_REPAIR
-	${If} ${RunningX64}
-!ifdef INCLUDE_X64
 !ifndef BUILD_FULL
-		${Install_Files} "MiKTeX.basic\*.*" "install_miktex.log"
+	${Install_Files} "MiKTeX.basic\*.*" "install_miktex.log"
 !else
-		${Install_Files} "MiKTeX.full\*.*" "install_miktex.log"
+	${Install_Files} "MiKTeX.full\*.*" "install_miktex.log"
 !endif
-!endif
-	${Else}
-!ifdef INCLUDE_X86
-!ifndef BUILD_FULL
-		${Install_Files} "MiKTeX.basic-x86\*.*" "install_miktex.log"
-!else
-		${Install_Files} "MiKTeX.full-x86\*.*" "install_miktex.log"
-!endif
-!endif
-	${EndIf}
 !endif
 
 	!insertmacro Install_Config_MiKTeX
+!endif
+
+SectionEnd
+
+Section "-MiKTeX_x86" Section_MiKTeX_x86
+
+!ifdef Include_MiKTeX_x86
+	SetOverwrite on
+	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
+
+!ifndef BUILD_REPAIR
+!ifndef BUILD_FULL
+	${Install_Files} "MiKTeX.basic-x86\*.*" "install_miktex.log"
+!else
+	${Install_Files} "MiKTeX.full-x86\*.*" "install_miktex.log"
+!endif
+!endif
+
+	!insertmacro Install_Config_MiKTeX
+!endif
 
 SectionEnd
 
@@ -141,6 +153,7 @@ Section "CTeX Addons" Section_Addons
 	DetailPrint "Run FontSetup"
 	nsExec::ExecToLog '$INSTDIR\${Addons_Dir}\ctex\bin\FontSetup.exe /S /LANG=$LANGUAGE /CTEXSETUP="$INSTDIR\${Addons_Dir}"'
 !endif
+
 SectionEnd
 
 Section "Ghostscript" Section_Ghostscript
@@ -284,6 +297,21 @@ Function un.onInit
 	!insertmacro Get_Uninstall_Information
 	!insertmacro Update_Uninstall_Information
 
+FunctionEnd
+
+Function .onSelChange
+	${If} ${SectionIsSelected} ${Section_MiKTeX}
+		${If} ${RunningX64}
+			!insertmacro SelectSection ${Section_MiKTeX_x64}
+			!insertmacro UnselectSection ${Section_MiKTeX_x86}
+		${Else}
+			!insertmacro UnselectSection ${Section_MiKTeX_x64}
+			!insertmacro SelectSection ${Section_MiKTeX_x86}
+		${EndIf}
+	${Else}
+		!insertmacro UnselectSection ${Section_MiKTeX_x64}
+		!insertmacro UnselectSection ${Section_MiKTeX_x86}
+	${EndIf}
 FunctionEnd
 
 Function SectionInit

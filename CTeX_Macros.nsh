@@ -505,6 +505,13 @@ FunctionEnd
 !macro Set_All_Sections_Selection
 	${If} $MiKTeX != ""
 		!insertmacro SelectSection ${Section_MiKTeX}
+		${If} ${RunningX64}
+			!insertmacro SelectSection ${Section_MiKTeX_x64}
+			!insertmacro UnselectSection ${Section_MiKTeX_x86}
+		${Else}
+			!insertmacro UnselectSection ${Section_MiKTeX_x64}
+			!insertmacro SelectSection ${Section_MiKTeX_x86}
+		${EndIf}
 	${EndIf}
 	${If} $Addons != ""
 		!insertmacro SelectSection ${Section_Addons}
@@ -522,6 +529,8 @@ FunctionEnd
 
 !macro Set_All_Sections_ReadOnly
 	!insertmacro SetSectionFlag ${Section_MiKTeX} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_MiKTeX_x64} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_MiKTeX_x86} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_Addons} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_Ghostscript} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_GSview} ${SF_RO}
@@ -616,10 +625,10 @@ FunctionEnd
 !macro Save_Compressed_Log LogFile
 	StrCpy $0 "$INSTDIR\install.log"
 	${If} ${FileExists} $0
-		DetailPrint "Compress install log: ${LogFile}"
 		Delete "${LogFile}"
 		Rename "$0" "${LogFile}"
 		unicode::FileUnicode2UTF8 "${LogFile}" "${LogFile}" "UTF-16LE"
+		DetailPrint "Compress install log: ${LogFile}"
 		${LineFind} "${LogFile}" "" "1:-1" "Compress_Log_Line"
 	${EndIf}
 !macroend
