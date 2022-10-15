@@ -1,5 +1,5 @@
-﻿CTeX 2.9.2
-==========
+﻿CTeX 3.0
+========
 
 目录
 
@@ -32,7 +32,7 @@
 
 2. 安装
 
-已经安装了低版本（早于2.7.0 beta2）的 CTeX 中文套装的用户请将原先的 
+已经安装了低版本（早于2.9.2）的 CTeX 中文套装的用户请将原先的 
 CTeX 中文套装卸载后删除安装目录，再安装新版本，不要直接升级。
 
 新版本中的 FontSetup 可以自动从系统字库中生成中文 Type1 字库，但是
@@ -81,8 +81,7 @@ pdfTeX 和 pdfLaTeX 直接使用 TrueType 字库，请在 tex 文件中使用如
 如果 CTeX 中文套装没有及时升级，你可以自己更新 CTeX 中文套装中的部件。
 CTeX 中文套装中的大部分软件可以单独升级。
 
-MiKTeX 升级可以使用菜单中的 MiKTeX -> Update
-MiKTeX 增加 package 可以使用菜单中的 MiKTeX -> Browser Packages
+MiKTeX 升级、更新和添加 package 可以使用开始菜单中的 MiKTeX Console 。
 
 Ghostscript 和 GSview 只需直接安装新的版本即可。安装完成以后，原来的目录
 可以删除。升级 Ghostscript 以后要在 GSview 的菜单
@@ -90,12 +89,13 @@ Options -> Easy Configuration 中设置正确的版本号，这样 GSview 才能
 作。有时还要刷新 MiKTeX 的文件名数据库以使用 Ghostscript 所带的字库。
 
 WinEdt 的升级比较麻烦，不建议自己升级。
+WinEdt 不是免费软件，建议用开始菜单中的 TeXWorks 代替。
 
 
 3.4. 刷新文件名数据库
 
 在对 CTeX 和 MiKTeX 目录下的文件作出修改后，请不要忘了刷新 MiKTeX 的
-文件名数据库。可以使用菜单中的 MiKTeX -> Settings 工具来完成。
+文件名数据库。可以使用开始菜单中的 MiKTeX Console 工具来完成。
 
 
 ====================================================
@@ -111,8 +111,7 @@ WinEdt 的升级比较麻烦，不建议自己升级。
 
 5. 关于我们
 
-CTEX 是一个中国 TeX 用户社区，目前负责 CTEX 网站和 CTEX 论坛的管理维护
-工作。
+CTEX 是一个中国 TeX 用户社区，目前负责 CTEX 网站的管理维护工作。
 
 CTEX 的宗旨是为中国广大的 TeX 用户提供力所能及的帮助。CTEX 目前除了
 维护 CTEX 网站外，还开发提供了 CTeX 中文套装（中文 TeX 套装）软件。
@@ -120,27 +119,26 @@ CTEX 的宗旨是为中国广大的 TeX 用户提供力所能及的帮助。CTEX
 
 5.1. CTEX 网站
 
-CTEX 的服务器和网络接入得到了中国科学院数学与系统科学研究院的支持。
+CTEX 的服务器和网络接入得到了中国运筹学会的支持。
 
 CTEX 网站提供大量的 TeX 相关软件和文档下载，以及各类新闻通讯。
 
 CTEX 网站的网址为 http://www.ctex.org
-CTEX 论坛的网址为 http://bbs.ctex.org
 
 
 5.2. CTeX 中文套装
 
-CTeX 中文套装是基于 Windows 下的 MiKTeX 系统，集成了编辑器 WinEdt 和 PostScript 
-处理软件 Ghostscript 和 GSview 等主要工具。
+CTeX 中文套装是基于 Windows 下的 MiKTeX 系统，集成了编辑器 WinEdt 和 
+PostScript 处理软件 Ghostscript 和 GSview 等主要工具。
 
 CTeX 中文套装在 MiKTeX 的基础上增加了对中文的完整支持。CTeX 中文套装支持
 CJK/CCT/TY 三种中文 TeX 处理方式。
 
 CTeX 中文套装只用于科研与学术目的，不得以任何理由用于商业目的。CTeX 中文套装中
-包含的所有免费、共享软件的版权均属于其原作者。安装程序的版权属于 CTEX。
+包含的所有免费、共享软件的版权均属于其原作者。安装程序的版权属于 CTEX 。
 
 
 5.3. 联系方式
 
 主页：http://www.ctex.org
-论坛：http://bbs.ctex.org
+反馈：https://github.com/Aloft-Lab/CTeX-Installer/issues
