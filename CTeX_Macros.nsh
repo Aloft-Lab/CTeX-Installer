@@ -624,7 +624,7 @@ FunctionEnd
 	${EndIf}
 !macroend
 
-!macro Check_Windows_X64
+!macro Get_X64_Settings
 	${If} ${RunningX64}
 		SetRegView 64
 		StrCpy $BINDIR "bin\x64"
@@ -633,6 +633,20 @@ FunctionEnd
 		SetRegView 32
 		StrCpy $BINDIR "bin"
 		StrCpy $MiKTeX_Setup ${MiKTeX_Setup32}
+	${EndIf}
+!macroend
+
+!macro Check_Windows_X64
+	${IfNot} ${RunningX64}
+		MessageBox MB_OK|MB_ICONSTOP "$(Msg_X64Required)"
+		Abort
+	${EndIf}
+!macroend
+
+!macro Check_Windows_X86
+	${If} ${RunningX64}
+		MessageBox MB_OK|MB_ICONSTOP "$(Msg_X86Required)"
+		Abort
 	${EndIf}
 !macroend
 

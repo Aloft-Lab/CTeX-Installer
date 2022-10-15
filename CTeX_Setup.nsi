@@ -13,27 +13,43 @@
 ; Functions and Macros
 !include "CTeX_Macros.nsh"
 
+; Build settings
+!define INCLUDE_X64
+!define INCLUDE_X86
+
 ; Variables
 Var UN_CONFIG_ONLY
 
 ; Main Install settings
-Name "${APP_NAME} ${APP_VERSION_STAGE}"
 BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 
-!ifndef BUILD_REPAIR
-	InstallDir "C:\CTEX"
-!ifndef BUILD_FULL
-	OutFile "CTeX_${APP_BUILD}.exe"
-!else
-	OutFile "CTeX_${APP_BUILD}_Full.exe"
+!define Name "${APP_NAME} ${APP_VERSION_STAGE}"
+!define InstallDir "C:\CTEX"
+
+!define OutFileS1
+!define OutFileS2
+!ifdef BUILD_X64_ONLY
+	!undef INCLUDE_X86
+	!define /redef OutFileS1 "_x64"
 !endif
+!ifdef BUILD_X86_ONLY
+	!undef INCLUDE_X64
+	!define /redef OutFileS1 "_x86"
 !endif
+!ifdef BUILD_FULL
+	!define /redef OutFileS2 "_Full"
+!endif
+!define OutFile "CTeX_${APP_BUILD}${OutFileS1}${OutFileS2}.exe"
 
 !ifdef BUILD_REPAIR
-	Name "${APP_NAME} ${APP_VERSION_STAGE} Repair"
-	InstallDir "$EXEDIR"
-	OutFile "Repair.exe"
+	!define /redef Name "${Name} Repair"
+	!define /redef InstallDir "$EXEDIR"
+	!define /redef OutFile "Repair.exe"
 !endif
+
+Name "${Name}"
+InstallDir "${InstallDir}"
+OutFile "${OutFile}"
 
 ; Other settings
 RequestExecutionLevel admin
@@ -82,19 +98,23 @@ Section "MiKTeX" Section_MiKTeX
 	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
 
 !ifndef BUILD_REPAIR
+	${If} ${RunningX64}
+!ifdef INCLUDE_X64
 !ifndef BUILD_FULL
-	${If} ${RunningX64}
 		${Install_Files} "MiKTeX.basic\*.*" "install_miktex.log"
-	${Else}
-		${Install_Files} "MiKTeX.basic-x86\*.*" "install_miktex.log"
-	${EndIf}
 !else
-	${If} ${RunningX64}
 		${Install_Files} "MiKTeX.full\*.*" "install_miktex.log"
-	${Else}
-		${Install_Files} "MiKTeX.full-x86\*.*" "install_miktex.log"
-	${EndIf}
 !endif
+!endif
+	${Else}
+!ifdef INCLUDE_X86
+!ifndef BUILD_FULL
+		${Install_Files} "MiKTeX.basic-x86\*.*" "install_miktex.log"
+!else
+		${Install_Files} "MiKTeX.full-x86\*.*" "install_miktex.log"
+!endif
+!endif
+	${EndIf}
 !endif
 
 	!insertmacro Install_Config_MiKTeX
@@ -224,7 +244,7 @@ Function .onInit
 
 	!insertmacro MUI_LANGDLL_DISPLAY
 
-	!insertmacro Check_Windows_X64
+	!insertmacro Get_X64_Settings
 
 	!insertmacro Get_StartMenu_Dir
 	!insertmacro Get_Uninstall_Information
@@ -242,6 +262,13 @@ Function .onInit
 FunctionEnd
 
 Function onMUIInit
+
+!ifdef BUILD_X64_ONLY
+	!insertmacro Check_Windows_X64
+!endif
+!ifdef BUILD_X86_ONLY
+	!insertmacro Check_Windows_X86
+!endif
 
 	!insertmacro Check_Obsolete_Version
 	!insertmacro Check_Update_Version
@@ -319,8 +346,10 @@ LangString Desc_WinEdt ${LANG_ENGLISH} "WinEdt a well designed text editor with 
 LangString Desc_File ${LANG_SIMPCHINESE} "文档"
 LangString Desc_File ${LANG_ENGLISH} "File"
 
-LangString Msg_WindowsX64Required ${LANG_SIMPCHINESE} "安装本程序需要64位Windows操作系统！"
-LangString Msg_WindowsX64Required ${LANG_ENGLISH} "The 64-bit version of Windows is required to install the program!"
+LangString Msg_X64Required ${LANG_SIMPCHINESE} "安装本程序需要64位Windows操作系统！"
+LangString Msg_X64Required ${LANG_ENGLISH} "The 64-bit version of Windows is required to install the program!"
+LangString Msg_X86Required ${LANG_SIMPCHINESE} "安装本程序需要32位Windows操作系统！"
+LangString Msg_X86Required ${LANG_ENGLISH} "The 32-bit version of Windows is required to install the program!"
 LangString Msg_AdminRequired ${LANG_SIMPCHINESE} "安装本程序需要管理员权限！"
 LangString Msg_AdminRequired ${LANG_ENGLISH} "Adminstrator rights are required to install the program!"
 LangString Msg_ObsoleteVersion ${LANG_SIMPCHINESE} "在系统中发现旧版的CTeX，请先卸载！"
