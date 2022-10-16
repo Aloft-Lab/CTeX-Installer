@@ -1,29 +1,24 @@
 CJK
 CJKpunct
-CJKspace (cjk)
-CJKutf8 (cjk)
-algorithm (algorithms)
+algorithms
 algorithmicx
-algpseudocode (algorithmicx)
 amsfonts
 amsmath
-amssymb (amsfonts)
-amsthm (amscls)
+amscls
 arydshln
 blindtext
-bm (latex-tools)
-bmpsize (oberdiek)
+latex-tools
+oberdiek
 booktabs
-calc (latex-tools)
 calrsfs
 caption
 ctex
-dblfnote (yafoot)
+yafoot
 diagbox
 endfloat
 endnotes
 enumitem
-epstopdf (epstopdf-pkg)
+epstopdf-pkg
 eso-pic
 etoolbox
 fancyhdr
@@ -32,28 +27,23 @@ filecontents
 float
 floatrow
 fontspec
-french (e-french)
+e-french
 geometry
-graphicx (graphics)
-helvet (psnfss)
+graphics
+psnfss
 hyperref
-ifpdf (iftex)
-ifxetex (iftex)
-indentfirst (latex-tools)
+iftex
 lineno
 lipsum
 listings
-makeidx (ltxbase)
+ltxbase
 manfnt
-mathpazo (psnfss)
-mathrsfs (jknappen)
+jknappen
 mathtools
 mcmthesis
 mdframed
 microtype
-miktex-cjkutils-bin-2.9
 minted
-multicol (latex-tools)
 multirow
 mwe
 natbib
@@ -61,25 +51,17 @@ overpic
 parskip
 pdftricks
 pst-plot
-pstcol (pstricks)
 pstricks
 setspace
-showframe (eso-pic)
 subfig
 subfigure
 tabu
-tikz (pgf)
-times (psnfss)
-? timesht
+pgf
 titlesec
 unicode-math
-verbatim (latex-tools)
 wallpaper
 wasysym
-? widetext
 xcolor
 xeCJK
-xparse (l3packages)
-? yearly
-? yyyymmdd
+l3packages
 zhmCJK
