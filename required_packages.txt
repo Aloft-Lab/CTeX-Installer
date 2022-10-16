@@ -1,29 +1,29 @@
 CJK
 CJKpunct
-CJKspace
-CJKutf8
-algorithm
+CJKspace (cjk)
+CJKutf8 (cjk)
+algorithm (algorithms)
 algorithmicx
-algpseudocode
+algpseudocode (algorithmicx)
 amsfonts
 amsmath
-amssymb
-amsthm
+amssymb (amsfonts)
+amsthm (amscls)
 arydshln
 blindtext
-bm
-bmpsize
+bm (latex-tools)
+bmpsize (oberdiek)
 booktabs
-calc
+calc (latex-tools)
 calrsfs
 caption
 ctex
-dblfnote
+dblfnote (yafoot)
 diagbox
 endfloat
 endnotes
 enumitem
-epstopdf
+epstopdf (epstopdf-pkg)
 eso-pic
 etoolbox
 fancyhdr
@@ -32,28 +32,28 @@ filecontents
 float
 floatrow
 fontspec
-french
+french (e-french)
 geometry
-graphicx
-helvet
+graphicx (graphics)
+helvet (psnfss)
 hyperref
-ifpdf
-ifxetex
-indentfirst
+ifpdf (iftex)
+ifxetex (iftex)
+indentfirst (latex-tools)
 lineno
 lipsum
 listings
-makeidx
+makeidx (ltxbase)
 manfnt
-mathpazo
-mathrsfs
+mathpazo (psnfss)
+mathrsfs (jknappen)
 mathtools
 mcmthesis
 mdframed
 microtype
 miktex-cjkutils-bin-2.9
 minted
-multicol
+multicol (latex-tools)
 multirow
 mwe
 natbib
@@ -61,25 +61,25 @@ overpic
 parskip
 pdftricks
 pst-plot
-pstcol
+pstcol (pstricks)
 pstricks
 setspace
-showframe
+showframe (eso-pic)
 subfig
 subfigure
 tabu
-tikz
-times
-timesht
+tikz (pgf)
+times (psnfss)
+? timesht
 titlesec
 unicode-math
-verbatim
+verbatim (latex-tools)
 wallpaper
 wasysym
-widetext
+? widetext
 xcolor
 xeCJK
-xparse
-yearly
-yyyymmdd
+xparse (l3packages)
+? yearly
+? yyyymmdd
 zhmCJK
