@@ -42,7 +42,6 @@ BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 !define OutFile "CTeX_${APP_BUILD}${OutFileS1}${OutFileS2}.exe"
 
 !ifdef BUILD_REPAIR
-	!define /redef Name "${Name} Repair"
 	!define /redef InstallDir "$EXEDIR"
 	!define /redef OutFile "Repair.exe"
 !endif
