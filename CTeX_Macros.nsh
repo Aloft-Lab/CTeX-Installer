@@ -609,27 +609,32 @@ FunctionEnd
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_miktex.log"
 !macroend
 
-Function Compress_Log_Line
-	StrCpy $R0 $R9 11
-	${If} $R0 == "File: overw"
-		StrCpy $0 "SkipWrite"
-	${ElseIf} $R0 == "CreateDirec"
-		StrCpy $R1 $R9 7 -9
-		${If} $R1 == "created"
-			StrCpy $0 "SkipWrite" 
-		${EndIf}
-	${EndIf}
-	Push $0
-FunctionEnd
-
 !macro Save_Compressed_Log LogFile
 	StrCpy $0 "$INSTDIR\install.log"
 	${If} ${FileExists} $0
-		Delete "${LogFile}"
-		Rename "$0" "${LogFile}"
-		unicode::FileUnicode2UTF8 "${LogFile}" "${LogFile}" "UTF-16LE"
 		DetailPrint "Compress install log: ${LogFile}"
-		${LineFind} "${LogFile}" "" "1:-1" "Compress_Log_Line"
+		Delete "${LogFile}"
+		FileOpen $1 "$0" "r"
+		FileOpen $2 "${LogFile}" "w"
+		${Do}
+			FileReadUTF16LE $1 $R9
+			${If} $R9 == ""
+				${ExitDo}
+			${EndIf}
+			StrCpy $R8 $R9 11
+			${If} $R8 == "File: overw"
+				${Continue}
+			${ElseIf} $R8 == "CreateDirec"
+				StrCpy $R7 $R9 7 -9
+				${If} $R7 == "created"
+					${Continue}
+				${EndIf}
+			${EndIf}
+			FileWrite $2 "$R9"
+		${Loop}
+		FileClose $2
+		FileClose $1
+		Delete "$0"
 	${EndIf}
 !macroend
 
