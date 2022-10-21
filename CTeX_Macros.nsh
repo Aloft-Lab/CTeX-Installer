@@ -35,6 +35,7 @@ Var ExitCode
 	${ExeCmdQ} '${Command}' '${Options}'
 	Pop $ExitCode
 	${If} $ExitCode != "0"
+		SetDetailsView show
 		MessageBox MB_OK|MB_ICONEXCLAMATION '$(Msg_ExeCmdError) (Exitcode: $ExitCode)$\n"${Command}" ${Options}'
 	${EndIf}
 !macroend
