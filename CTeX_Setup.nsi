@@ -258,7 +258,6 @@ Function .onInit
 	!insertmacro MUI_LANGDLL_DISPLAY
 
 	!insertmacro Get_X64_Settings
-
 	!insertmacro Get_StartMenu_Dir
 	!insertmacro Get_Uninstall_Information
 	!insertmacro Restore_Install_Information
@@ -293,6 +292,7 @@ Function un.onInit
 	${GetParameters} $R0
 	${GetOptions} $R0 "/CONFIG_ONLY=" $UN_CONFIG_ONLY
 
+	!insertmacro Get_X64_Settings
 	!insertmacro Get_StartMenu_Dir
 	!insertmacro Get_Uninstall_Information
 	!insertmacro Update_Uninstall_Information

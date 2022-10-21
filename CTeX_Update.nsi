@@ -39,6 +39,7 @@ RequestExecutionLevel admin
 
 Section
 
+	!insertmacro Get_X64_Settings
 	!insertmacro Get_StartMenu_Dir
 	!insertmacro Get_Uninstall_Information
 	!insertmacro Update_Uninstall_Information
