@@ -170,7 +170,6 @@ FunctionEnd
 		CreateShortCut "$9\TeXworks.lnk" "$1\miktex-texworks.exe"
 
 		DetailPrint "Update MiKTeX settings"
-		${ExeCmdQ} "$1\miktex.exe" "--admin --disable-installer --verbose fndb remove"
 		${ExeCmd} "$1\mpm.exe" "--register-components --admin --verbose"
 		${ExeCmd} "$1\miktex.exe" "--admin --disable-installer --verbose fndb refresh"
 		${ExeCmd} "$1\miktex.exe" "--admin --disable-installer --verbose links install --force"
