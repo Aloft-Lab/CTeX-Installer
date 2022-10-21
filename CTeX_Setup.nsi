@@ -330,7 +330,7 @@ Function SectionInit
 !else
 		StrCpy $R0 ""
 !endif
-		${ExeCmd} "$UN_INSTDIR\Uninstall.exe" '/S $R0 _?="$UN_INSTDIR"'
+		${ExeCmd} "$UN_INSTDIR\Uninstall.exe" '/S $R0 _?=$UN_INSTDIR'
 	${Else}
 		!insertmacro Uninstall_All_Configs ""
 !ifndef BUILD_REPAIR
