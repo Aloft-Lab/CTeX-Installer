@@ -150,7 +150,7 @@ Section "CTeX Addons" Section_Addons
 ; Install Chinese fonts
 !ifndef BUILD_REPAIR
 	DetailPrint "Run FontSetup"
-	nsExec::ExecToLog '$INSTDIR\${Addons_Dir}\ctex\bin\FontSetup.exe /S /LANG=$LANGUAGE /CTEXSETUP="$INSTDIR\${Addons_Dir}"'
+	${ExeCmd} "$INSTDIR\${Addons_Dir}\ctex\bin\FontSetup.exe" '/S /LANG=$LANGUAGE /CTEXSETUP="$INSTDIR\${Addons_Dir}"'
 !endif
 
 SectionEnd
@@ -245,8 +245,9 @@ Section Uninstall
 	; Remove remaining directories
 	RMDir $UN_INSTDIR
 	${If} ${FileExists} $UN_INSTDIR
-		MessageBox MB_YESNO $(Msg_RemoveInstDir) /SD IDNO IDNO +2
+		MessageBox MB_YESNO $(Msg_RemoveInstDir) /SD IDNO IDNO jumpNoRemove
 			RMDir /r $UN_INSTDIR
+		jumpNoRemove:
 	${EndIf}
 
 SectionEnd
@@ -329,7 +330,7 @@ Function SectionInit
 !else
 		StrCpy $R0 ""
 !endif
-		nsExec::ExecToLog "$UN_INSTDIR\Uninstall.exe /S $R0 _?=$UN_INSTDIR"
+		${ExeCmd} "$UN_INSTDIR\Uninstall.exe" '/S $R0 _?="$UN_INSTDIR"'
 	${Else}
 		!insertmacro Uninstall_All_Configs ""
 !ifndef BUILD_REPAIR
@@ -391,5 +392,7 @@ LangString Msg_FontSetup ${LANG_SIMPCHINESE} "是否运行中文字体安装程�
 LangString Msg_FontSetup ${LANG_ENGLISH} "Run the Chinese font setup program?"
 LangString Msg_UpdateMiKTeX ${LANG_SIMPCHINESE} "是否在线更新MiKTeX？"
 LangString Msg_UpdateMiKTeX ${LANG_ENGLISH} "Update MiKTeX through Internet?"
+LangString Msg_ExeCmdError ${LANG_SIMPCHINESE} "执行以下命令时发现错误，请检查安装日志！"
+LangString Msg_ExeCmdError ${LANG_ENGLISH} "Found errors when executing the following command, please check the installation log!"
 
 ; eof

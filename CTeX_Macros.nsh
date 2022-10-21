@@ -24,6 +24,22 @@ Var SMCTEX
 Var BINDIR
 Var MiKTeX_Setup
 
+!macro _ExeCmdQ Command Options
+	DetailPrint 'Executing: ${Command} ${Options}'
+	nsExec::ExecToLog '"${Command}" ${Options}'
+!macroend
+!define ExeCmdQ '!insertmacro _ExeCmdQ'
+
+Var ExitCode
+!macro _ExeCmd Command Options
+	${ExeCmdQ} '${Command}' '${Options}'
+	Pop $ExitCode
+	${If} $ExitCode != "0"
+		MessageBox MB_OK|MB_ICONEXCLAMATION '$(Msg_ExeCmdError) (Exitcode: $ExitCode)$\n"${Command}" ${Options}'
+	${EndIf}
+!macroend
+!define ExeCmd '!insertmacro _ExeCmd'
+
 !macro _CreateURLShortCut URLFile URLSite
 	WriteINIStr "${URLFile}.URL" "InternetShortcut" "URL" "${URLSite}"
 !macroend
@@ -154,16 +170,16 @@ FunctionEnd
 		CreateShortCut "$9\TeXworks.lnk" "$1\miktex-texworks.exe"
 
 		DetailPrint "Update MiKTeX settings"
-		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fndb remove"
-		nsExec::ExecToLog "$1\mpm.exe --register-components --admin --verbose"
-		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
-		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose links install --force"
-		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fontmaps configure"
-		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose languages configure"
-		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose fndb refresh"
-		nsExec::ExecToLog "$1\miktex.exe --admin --disable-installer --verbose filetypes register"
-		nsExec::ExecToLog "$1\initexmf.exe --default-paper-size=A4 --admin --disable-installer --verbose"
-		nsExec::ExecToLog "$1\yap.exe --register"
+		${ExeCmdQ} "$1\miktex.exe" "--admin --disable-installer --verbose fndb remove"
+		${ExeCmd} "$1\mpm.exe" "--register-components --admin --verbose"
+		${ExeCmd} "$1\miktex.exe" "--admin --disable-installer --verbose fndb refresh"
+		${ExeCmd} "$1\miktex.exe" "--admin --disable-installer --verbose links install --force"
+		${ExeCmd} "$1\miktex.exe" "--admin --disable-installer --verbose fontmaps configure"
+		${ExeCmd} "$1\miktex.exe" "--admin --disable-installer --verbose languages configure"
+		${ExeCmd} "$1\miktex.exe" "--admin --disable-installer --verbose fndb refresh"
+		${ExeCmd} "$1\miktex.exe" "--admin --disable-installer --verbose filetypes register"
+		${ExeCmd} "$1\initexmf.exe" "--default-paper-size=A4 --admin --disable-installer --verbose"
+		${ExeCmd} "$1\yap.exe" "--register"
 	${EndIf}
 !macroend
 
@@ -171,7 +187,7 @@ FunctionEnd
 	${If} $UN_MiKTeX != ""
 		DetailPrint "Uninstall MiKTeX configs"
 
-		nsExec::ExecToLog "$UN_INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR\mpm.exe --unregister-components --admin --verbose"
+		${ExeCmd} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR\mpm.exe" "--unregister-components --admin --verbose"
 
 		DeleteRegKey HKLM "Software\MiKTeX.org"
 		DeleteRegKey HKCU "Software\MiKTeX.org"
@@ -213,7 +229,7 @@ FunctionEnd
 		FileWrite $R0 "-H$0\tex\latex\cct$\n"
 		FileClose $R0
 	
-		nsExec::ExecToLog "$0\cct\bin\cctinit.exe"
+		${ExeCmd} "$0\cct\bin\cctinit.exe" ""
 
 ; Install TY
 		${AppendPath} "$0\ty\bin"
@@ -397,10 +413,10 @@ FunctionEnd
 
 	StrCpy $9 "$INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR"
 	DetailPrint "Update MiKTeX file name database"
-	nsExec::ExecToLog "$9\miktex.exe --admin --disable-installer --verbose fndb refresh"
-	nsExec::ExecToLog "$9\miktex.exe --disable-installer --verbose fndb refresh"
+	${ExeCmd} "$9\miktex.exe" "--admin --disable-installer --verbose fndb refresh"
+	${ExeCmd} "$9\miktex.exe" "--disable-installer --verbose fndb refresh"
 	DetailPrint "Update MiKTeX updmap database"
-	nsExec::ExecToLog "$9\miktex.exe --admin --disable-installer --verbose fontmaps configure"
+	${ExeCmd} "$9\miktex.exe" "--admin --disable-installer --verbose fontmaps configure"
 
 	!insertmacro UPDATEFILEASSOC
 !macroend
@@ -682,7 +698,8 @@ FunctionEnd
 !macro Update_MiKTeX_Packages
 	DetailPrint "Update MiKTeX packages"
 	${If} $MiKTeX != ""
-		MessageBox MB_YESNO|MB_ICONQUESTION "$(Msg_UpdateMiKTeX)" /SD IDNO IDNO +2
-		nsExec::ExecToLog "$INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR\miktex.exe --admin --disable-installer --verbose packages update"
+		MessageBox MB_YESNO|MB_ICONQUESTION "$(Msg_UpdateMiKTeX)" /SD IDNO IDNO jumpNoUpdate
+			${ExeCmd} "$INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR\miktex.exe" "--admin --disable-installer --verbose packages update"
+		jumpNoUpdate:
 	${EndIf}
 !macroend

@@ -105,7 +105,7 @@ Section
 
 	!insertmacro Save_Install_Information
 	
-	nsExec::ExecToLog "$INSTDIR\Repair.exe /S"
+	${ExeCmd} "$INSTDIR\Repair.exe" "/S"
 
 	!insertmacro Update_MiKTeX_Packages
 
@@ -170,5 +170,7 @@ LangString Msg_FontSetup ${LANG_SIMPCHINESE} "必须重新生成中文Type1字�
 LangString Msg_FontSetup ${LANG_ENGLISH} "Must re-generate Chinese Type1 fonts! Run FontSetup?"
 LangString Msg_UpdateMiKTeX ${LANG_SIMPCHINESE} "是否在线更新MiKTeX？"
 LangString Msg_UpdateMiKTeX ${LANG_ENGLISH} "Update MiKTeX through Internet?"
+LangString Msg_ExeCmdError ${LANG_SIMPCHINESE} "执行以下命令时发现错误，请检查安装日志！"
+LangString Msg_ExeCmdError ${LANG_ENGLISH} "Found errors when executing the following command, please check the installation log!"
 
 ; eof
