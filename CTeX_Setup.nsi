@@ -138,17 +138,17 @@ Section "CTeX Addons" Section_Addons
 	SetOutPath "$INSTDIR\${Addons_Dir}"
 
 !ifndef BUILD_REPAIR
-	${Install_Files} "Addons\CTeX\*.*" "install_ctex.log"
-	${Install_Files} "Addons\CJK\*.*" "install_cjk.log"
-	${Install_Files} "Addons\CCT\*.*" "install_cct.log"
-	${Install_Files} "Addons\TY\*.*" "install_ty.log"
-	${Install_Files} "Addons\Packages\*.*" "install_packages.log"
+	${Install_Files} "Addons\CTeX\*.*" "install_addons.log"
+	${Install_Files_A} "Addons\CJK\*.*" "install_addons.log"
+	${Install_Files_A} "Addons\CCT\*.*" "install_addons.log"
+	${Install_Files_A} "Addons\TY\*.*" "install_addons.log"
+	${Install_Files_A} "Addons\Packages\*.*" "install_addons.log"
 
 !ifdef Include_MiKTeX_x64
-	${Install_Files} "Addons\x64\*.*" "install_addons.log"
+	${Install_Files_A} "Addons\x64\*.*" "install_addons.log"
 !endif
 !ifdef Include_MiKTeX_x86
-	${Install_Files} "Addons\x86\*.*" "install_addons.log"
+	${Install_Files_A} "Addons\x86\*.*" "install_addons.log"
 !endif
 
 !endif

@@ -434,14 +434,15 @@ FunctionEnd
 	!insertmacro UPDATEFILEASSOC
 !macroend
 
-!macro _Install_Files Files Log_File
+!macro _Install_Files LogMode Files LogFile
 	CreateDirectory "$INSTDIR\${Logs_Dir}"
 	LogSet on
 	File /r "${Files}"
 	LogSet off
-	!insertmacro Save_Compressed_Log "$INSTDIR\${Logs_Dir}\${Log_File}"
+	!insertmacro Save_Compressed_Log ${LogMode} "$INSTDIR\${Logs_Dir}\${LogFile}"
 !macroend
-!define Install_Files "!insertmacro _Install_Files"
+!define Install_Files '!insertmacro _Install_Files ""'
+!define Install_Files_A '!insertmacro _Install_Files "A"'
 
 !macro _Begin_Install_Files
 	CreateDirectory "$INSTDIR\${Logs_Dir}"
@@ -449,11 +450,12 @@ FunctionEnd
 !macroend
 !define Begin_Install_Files "!insertmacro _Begin_Install_Files"
 
-!macro _End_Install_Files Log_File
+!macro _End_Install_Files LogMode LogFile
 	LogSet off
-	!insertmacro Save_Compressed_Log "$INSTDIR\${Logs_Dir}\${Log_File}"
+	!insertmacro Save_Compressed_Log ${LogMode} "$INSTDIR\${Logs_Dir}\${LogFile}"
 !macroend
-!define End_Install_Files "!insertmacro _End_Install_Files"
+!define End_Install_Files '!insertmacro _End_Install_Files ""'
+!define End_Install_Files_A '!insertmacro _End_Install_Files "A"'
 
 !macro Uninstall_All_Configs UN
 	${If} $UN_INSTDIR != ""
@@ -473,13 +475,8 @@ FunctionEnd
 		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_winedt.log"
 		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_gsview.log"
 		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_ghostscript.log"
-		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_packages.log"
-		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_ty.log"
-		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_cct.log"
-		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_cjk.log"
-		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_ctex.log"
-		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_miktex.log"
 		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_addons.log"
+		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_miktex.log"
 		RMDir "$UN_INSTDIR\${Logs_Dir}"
 		RMDir "$UN_INSTDIR\${WinEdt_Dir}"
 		RMDir "$UN_INSTDIR\${GSview_Dir}"
@@ -618,22 +615,21 @@ FunctionEnd
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_winedt.log"
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_gsview.log"
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_ghostscript.log"
-	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_packages.log"
-	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_ty.log"
-	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_cct.log"
-	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_cjk.log"
-	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_ctex.log"
-	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_miktex.log"
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_addons.log"
+	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_miktex.log"
 !macroend
 
-!macro Save_Compressed_Log LogFile
+!macro Save_Compressed_Log LogMode LogFile
 	StrCpy $0 "$INSTDIR\install.log"
 	${If} ${FileExists} $0
 		DetailPrint "Compress install log: ${LogFile}"
-		Delete "${LogFile}"
 		FileOpen $1 "$0" "r"
-		FileOpen $2 "${LogFile}" "w"
+		${If} ${LogMode} == "A"
+			FileOpen $2 "${LogFile}" "a"
+			FileSeek $2 0 END
+		${Else}
+			FileOpen $2 "${LogFile}" "w"
+		${EndIf}
 		${Do}
 			FileReadUTF16LE $1 $R9
 			${If} $R9 == ""

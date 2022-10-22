@@ -56,10 +56,6 @@ Section
 
 ;		SetOutPath $INSTDIR\${Addons_Dir}
 ;		File /r Addons\CCT\*.*
-
-;		SetOutPath "$INSTDIR\${Addons_Dir}"
-;		${Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_packages.log"
-;		${Install_Files} "Addons\Packages\*.*" "install_packages.log"
 	${EndIf}
 
 	${If} $GSview != ""
