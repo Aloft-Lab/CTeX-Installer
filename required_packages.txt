@@ -28,6 +28,7 @@ fontspec
 geometry
 glyphlist
 graphics
+hypernat
 hyperref
 iftex
 jknappen
