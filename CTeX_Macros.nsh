@@ -439,7 +439,7 @@ FunctionEnd
 	LogSet on
 	File /r "${Files}"
 	LogSet off
-	!insertmacro Save_Compressed_Log ${LogMode} "$INSTDIR\${Logs_Dir}\${LogFile}"
+	!insertmacro Save_Compressed_Log "${LogMode}" "$INSTDIR\${Logs_Dir}\${LogFile}"
 !macroend
 !define Install_Files '!insertmacro _Install_Files ""'
 !define Install_Files_A '!insertmacro _Install_Files "A"'
@@ -452,7 +452,7 @@ FunctionEnd
 
 !macro _End_Install_Files LogMode LogFile
 	LogSet off
-	!insertmacro Save_Compressed_Log ${LogMode} "$INSTDIR\${Logs_Dir}\${LogFile}"
+	!insertmacro Save_Compressed_Log "${LogMode}" "$INSTDIR\${Logs_Dir}\${LogFile}"
 !macroend
 !define End_Install_Files '!insertmacro _End_Install_Files ""'
 !define End_Install_Files_A '!insertmacro _End_Install_Files "A"'
@@ -624,7 +624,7 @@ FunctionEnd
 	${If} ${FileExists} $0
 		DetailPrint "Compress install log: ${LogFile}"
 		FileOpen $1 "$0" "r"
-		${If} ${LogMode} == "A"
+		${If} "${LogMode}" == "A"
 			FileOpen $2 "${LogFile}" "a"
 			FileSeek $2 0 END
 		${Else}
