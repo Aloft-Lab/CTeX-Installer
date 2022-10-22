@@ -143,6 +143,14 @@ Section "CTeX Addons" Section_Addons
 	${Install_Files} "Addons\CCT\*.*" "install_cct.log"
 	${Install_Files} "Addons\TY\*.*" "install_ty.log"
 	${Install_Files} "Addons\Packages\*.*" "install_packages.log"
+
+!ifdef Include_MiKTeX_x64
+	${Install_Files} "Addons\x64\*.*" "install_addons.log"
+!endif
+!ifdef Include_MiKTeX_x86
+	${Install_Files} "Addons\x86\*.*" "install_addons.log"
+!endif
+
 !endif
 
 	!insertmacro Install_Config_Addons

@@ -479,6 +479,7 @@ FunctionEnd
 		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_cjk.log"
 		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_ctex.log"
 		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_miktex.log"
+		${${UN}Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_addons.log"
 		RMDir "$UN_INSTDIR\${Logs_Dir}"
 		RMDir "$UN_INSTDIR\${WinEdt_Dir}"
 		RMDir "$UN_INSTDIR\${GSview_Dir}"
@@ -623,6 +624,7 @@ FunctionEnd
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_cjk.log"
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_ctex.log"
 	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_miktex.log"
+	!insertmacro Update_Log "$INSTDIR\${Logs_Dir}\install_addons.log"
 !macroend
 
 !macro Save_Compressed_Log LogFile

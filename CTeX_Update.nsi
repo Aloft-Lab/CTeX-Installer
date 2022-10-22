@@ -48,7 +48,11 @@ Section
 
 	${If} $Addons != ""
 		SetOutPath $INSTDIR\${Addons_Dir}\ctex\bin
-		File Addons\CTeX\ctex\bin\SumatraPDF.exe
+		${If} ${RunningX64}
+			File Addons\x64\ctex\bin\SumatraPDF.exe
+		${Else}
+			File Addons\x86\ctex\bin\SumatraPDF.exe
+		${EndIf}
 
 ;		SetOutPath $INSTDIR\${Addons_Dir}
 ;		File /r Addons\CCT\*.*
