@@ -63,8 +63,13 @@ titlesec
 unicode-math
 wallpaper
 wasysym
+xCJK2uni
 xcolor
 xeCJK
+xpinyin
 yafoot
+zhlineskip
 zhmCJK
+zhmetrics
 zhnumber
+zhspacing
