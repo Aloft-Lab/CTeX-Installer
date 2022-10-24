@@ -1,8 +1,10 @@
-﻿2022.11.1
-  - v3.0-alpha
-  - 升级 MiKTeX-x86 21.6-20221021
-  - 增加 MiKTeX-x64 22.7-20221021
+﻿2022.10.24
+  - v3.0.202.0
+  - 修改版本号格式为 major.minor.build.stage，最后一个数字： 0-alpha, 1-beta, 2-release
+  - 升级 MiKTeX-x86 21.6-20221024
+  - 增加 MiKTeX-x64 22.7-20221024
   - 更新 SumatraPDF 3.4.6 (32/64)
+  - 增加 MiKTeX 预装常用宏包
   - 删除宏包 CJKpunct/hypernat，使用 MiKTeX 内含的版本
   - 删除过时的宏包 CASthesis/PostDocRep
 
