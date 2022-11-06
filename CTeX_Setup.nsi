@@ -350,9 +350,9 @@ Function un.onInit
 FunctionEnd
 
 Function .onSelChange
-	!insertmacro Section_Select_X64 ${Section_MiKTeX} ${Section_MiKTeX_x64} ${Section_MiKTeX_x86}
-	!insertmacro Section_Select_X64 ${Section_Ghostscript} ${Section_Ghostscript_x64} ${Section_Ghostscript_x86}
-	!insertmacro Section_Select_X64 ${Section_GSview} ${Section_GSview_x64} ${Section_GSview_x86}
+	!insertmacro Section_Change_X64 ${Section_MiKTeX} ${Section_MiKTeX_x64} ${Section_MiKTeX_x86}
+	!insertmacro Section_Change_X64 ${Section_Ghostscript} ${Section_Ghostscript_x64} ${Section_Ghostscript_x86}
+	!insertmacro Section_Change_X64 ${Section_GSview} ${Section_GSview_x64} ${Section_GSview_x86}
 FunctionEnd
 
 Function SectionInit

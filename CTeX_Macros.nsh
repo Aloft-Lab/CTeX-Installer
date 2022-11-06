@@ -514,23 +514,16 @@ FunctionEnd
 
 !macro Set_All_Sections_Selection
 	${If} $MiKTeX != ""
-		!insertmacro SelectSection ${Section_MiKTeX}
-		${If} ${RunningX64}
-			!insertmacro SelectSection ${Section_MiKTeX_x64}
-			!insertmacro UnselectSection ${Section_MiKTeX_x86}
-		${Else}
-			!insertmacro UnselectSection ${Section_MiKTeX_x64}
-			!insertmacro SelectSection ${Section_MiKTeX_x86}
-		${EndIf}
+		!insertmacro Section_Select_X64 ${Section_MiKTeX} ${Section_MiKTeX_x64} ${Section_MiKTeX_x86}
 	${EndIf}
 	${If} $Addons != ""
 		!insertmacro SelectSection ${Section_Addons}
 	${EndIf}
 	${If} $Ghostscript != ""
-		!insertmacro SelectSection ${Section_Ghostscript}
+		!insertmacro Section_Select_X64 ${Section_Ghostscript} ${Section_Ghostscript_x64} ${Section_Ghostscript_x86}
 	${EndIf}
 	${If} $GSview != ""
-		!insertmacro SelectSection ${Section_GSview}
+		!insertmacro Section_Select_X64 ${Section_GSview} ${Section_GSview_x64} ${Section_GSview_x86}
 	${EndIf}
 	${If} $WinEdt != ""
 		!insertmacro SelectSection ${Section_WinEdt}
@@ -543,7 +536,11 @@ FunctionEnd
 	!insertmacro SetSectionFlag ${Section_MiKTeX_x86} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_Addons} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_Ghostscript} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_Ghostscript_x64} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_Ghostscript_x86} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_GSview} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_GSview_x64} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_GSview_x86} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_WinEdt} ${SF_RO}
 !macroend
 
@@ -663,6 +660,17 @@ FunctionEnd
 !macroend
 
 !macro Section_Select_X64 SectionMain SectionX64 SectionX86
+	!insertmacro SelectSection ${SectionMain}
+	${If} ${RunningX64}
+		!insertmacro SelectSection ${SectionX64}
+		!insertmacro UnselectSection ${SectionX86}
+	${Else}
+		!insertmacro UnselectSection ${SectionX64}
+		!insertmacro SelectSection ${SectionX86}
+	${EndIf}
+!macroend
+
+!macro Section_Change_X64 SectionMain SectionX64 SectionX86
 	${If} ${SectionIsSelected} ${SectionMain}
 		${If} ${RunningX64}
 			!insertmacro SelectSection ${SectionX64}
