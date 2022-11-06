@@ -1,4 +1,9 @@
-﻿2022.10.24
+﻿2022.11
+  - v3.0
+  - 升级 GSview 6.0 (32/64)
+  - 升级 Ghostscript 10.00.0 (32/64)
+
+2022.10.24
   - v3.0.202.0
   - 修改版本号格式为 major.minor.build.stage，最后一个数字： 0-alpha, 1-beta, 2-release
   - 升级 MiKTeX-x86 21.6-20221024

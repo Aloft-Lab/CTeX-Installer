@@ -14,8 +14,8 @@
 !include "CTeX_Macros.nsh"
 
 ; Build settings
-!define Include_MiKTeX_x64
-!define Include_MiKTeX_x86
+!define Include_Files_x64
+!define Include_Files_x86
 
 ; Variables
 Var UN_CONFIG_ONLY
@@ -29,11 +29,11 @@ BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 !define OutFileS1
 !define OutFileS2
 !ifdef BUILD_X64_ONLY
-	!undef Include_MiKTeX_x86
+	!undef Include_Files_x86
 	!define /redef OutFileS1 "_x64"
 !endif
 !ifdef BUILD_X86_ONLY
-	!undef Include_MiKTeX_x64
+	!undef Include_Files_x64
 	!define /redef OutFileS1 "_x86"
 !endif
 !ifdef BUILD_FULL
@@ -96,7 +96,7 @@ SectionEnd
 
 Section "-MiKTeX_x64" Section_MiKTeX_x64
 
-!ifdef Include_MiKTeX_x64
+!ifdef Include_Files_x64
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
 
@@ -115,7 +115,7 @@ SectionEnd
 
 Section "-MiKTeX_x86" Section_MiKTeX_x86
 
-!ifdef Include_MiKTeX_x86
+!ifdef Include_Files_x86
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
 
@@ -145,11 +145,11 @@ Section "CTeX Addons" Section_Addons
 	${Install_Files_A} "Addons\Packages\*.*" "install_addons.log"
 
 	${If} ${RunningX64}
-!ifdef Include_MiKTeX_x64
+!ifdef Include_Files_x64
 		${Install_Files_A} "Addons\x64\*.*" "install_addons.log"
 !endif
 	${Else}
-!ifdef Include_MiKTeX_x86
+!ifdef Include_Files_x86
 		${Install_Files_A} "Addons\x86\*.*" "install_addons.log"
 !endif
 	${EndIf}
@@ -166,7 +166,11 @@ Section "CTeX Addons" Section_Addons
 SectionEnd
 
 Section "Ghostscript" Section_Ghostscript
+SectionEnd
 
+Section "-Ghostscript_x64" Section_Ghostscript_x64
+
+!ifdef Include_Files_x64
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${Ghostscript_Dir}"
 
@@ -175,11 +179,31 @@ Section "Ghostscript" Section_Ghostscript
 !endif
 
 	!insertmacro Install_Config_Ghostscript
+!endif
+
+SectionEnd
+
+Section "-Ghostscript_x86" Section_Ghostscript_x86
+
+!ifdef Include_Files_x86
+	SetOverwrite on
+	SetOutPath "$INSTDIR\${Ghostscript_Dir}"
+
+!ifndef BUILD_REPAIR
+	${Install_Files} "Ghostscript-x86\*.*" "install_ghostscript.log"
+!endif
+
+	!insertmacro Install_Config_Ghostscript
+!endif
 
 SectionEnd
 
 Section "GSview" Section_GSview
+SectionEnd
 
+Section "-GSview_x64" Section_GSview_x64
+
+!ifdef Include_Files_x64
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${GSview_Dir}"
 
@@ -188,6 +212,22 @@ Section "GSview" Section_GSview
 !endif
 
 	!insertmacro Install_Config_GSview
+!endif
+
+SectionEnd
+
+Section "-GSview_x86" Section_GSview_x86
+
+!ifdef Include_Files_x86
+	SetOverwrite on
+	SetOutPath "$INSTDIR\${GSview_Dir}"
+
+!ifndef BUILD_REPAIR
+	${Install_Files} "GSview-x86\*.*" "install_gsview.log"
+!endif
+
+	!insertmacro Install_Config_GSview
+!endif
 
 SectionEnd
 
@@ -310,18 +350,9 @@ Function un.onInit
 FunctionEnd
 
 Function .onSelChange
-	${If} ${SectionIsSelected} ${Section_MiKTeX}
-		${If} ${RunningX64}
-			!insertmacro SelectSection ${Section_MiKTeX_x64}
-			!insertmacro UnselectSection ${Section_MiKTeX_x86}
-		${Else}
-			!insertmacro UnselectSection ${Section_MiKTeX_x64}
-			!insertmacro SelectSection ${Section_MiKTeX_x86}
-		${EndIf}
-	${Else}
-		!insertmacro UnselectSection ${Section_MiKTeX_x64}
-		!insertmacro UnselectSection ${Section_MiKTeX_x86}
-	${EndIf}
+	!insertmacro Section_Select_X64 ${Section_MiKTeX} ${Section_MiKTeX_x64} ${Section_MiKTeX_x86}
+	!insertmacro Section_Select_X64 ${Section_Ghostscript} ${Section_Ghostscript_x64} ${Section_Ghostscript_x86}
+	!insertmacro Section_Select_X64 ${Section_GSview} ${Section_GSview_x64} ${Section_GSview_x86}
 FunctionEnd
 
 Function SectionInit

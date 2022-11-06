@@ -24,8 +24,8 @@
 
         MiKTeX 2.9
         WinEdt 7.0
-        GSview 5.0
-        Ghostscript 9.05
+        GSview 6.0
+        Ghostscript 10.00.0
 
 
 ====================================================

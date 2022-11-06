@@ -21,8 +21,9 @@ Var UN_Ghostscript
 Var UN_GSview
 Var UN_WinEdt
 Var SMCTEX
-Var BINDIR
+Var MiKTeX_BIN
 Var MiKTeX_Setup
+Var Ghostscript_DLL
 
 !macro _ExeCmdQ Command Options
 	DetailPrint 'Executing: ${Command} ${Options}'
@@ -146,7 +147,7 @@ FunctionEnd
 		!insertmacro _Remove_MiKTeX_Roots
 
 		StrCpy $0 "$INSTDIR\${MiKTeX_Dir}"
-		StrCpy $1 "$0\miktex\$BINDIR"
+		StrCpy $1 "$0\miktex\$MiKTeX_BIN"
 
 		StrCpy $9 "Software\MiKTeX.org\MiKTeX\$MiKTeX"
 		WriteRegStr HKLM "$9\Core" "SharedSetup" "1"
@@ -187,12 +188,12 @@ FunctionEnd
 	${If} $UN_MiKTeX != ""
 		DetailPrint "Uninstall MiKTeX configs"
 
-		${ExeCmd} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR\mpm.exe" "--unregister-components --admin --verbose"
+		${ExeCmd} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\$MiKTeX_BIN\mpm.exe" "--unregister-components --admin --verbose"
 
 		DeleteRegKey HKLM "Software\MiKTeX.org"
 		DeleteRegKey HKCU "Software\MiKTeX.org"
 
-		${${UN}RemovePath} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR"
+		${${UN}RemovePath} "$UN_INSTDIR\${MiKTeX_Dir}\miktex\$MiKTeX_BIN"
 		${${UN}RemovePath} "$UN_INSTDIR\${UserData_Dir}\miktex\bin"
 		${${UN}RemovePath} "$APPDATA\MiKTeX\$UN_MiKTeX\miktex\bin"
 
@@ -279,14 +280,14 @@ FunctionEnd
 	${If} $Ghostscript != ""
 		DetailPrint "Install Ghostscript configs"
 
-		StrCpy $0 "$INSTDIR\${Ghostscript_Dir}"
-		StrCpy $1 "$0\gs$Ghostscript"
+		StrCpy $0 "$INSTDIR\${Ghostscript_Dir}\gs$Ghostscript"
+		WriteRegStr HKLM "Software\Artifex\GPL Ghostscript\$Ghostscript" "" "$0"
 		
 		StrCpy $9 "Software\GPL Ghostscript\$Ghostscript"
-		WriteRegStr HKLM32 "$9" "GS_DLL" "$1\bin\gsdll32.dll"
-		WriteRegStr HKLM32 "$9" "GS_LIB" "$1\lib;$0\fonts;$FONTS"
+		WriteRegStr HKLM "$9" "GS_DLL" "$0\bin\$Ghostscript_DLL"
+		WriteRegStr HKLM "$9" "GS_LIB" "$0\bin;$0\lib;$0\fonts;$FONTS"
 	
-		${AppendPath} "$1\bin"
+		${AppendPath} "$0\bin"
 	${EndIf}
 !macroend
 
@@ -294,7 +295,12 @@ FunctionEnd
 	${If} $UN_Ghostscript != ""
 		DetailPrint "Uninstall Ghostscript configs"
 
-		DeleteRegKey HKLM32 "Software\GPL Ghostscript"
+		DeleteRegKey HKLM "Software\Artifex\GPL Ghostscript"
+		EnumRegKey $0 HKLM "Software\Artifex" "0"
+		${If} $0 == ""
+			DeleteRegKey HKLM "Software\Artifex"
+		${EndIf}
+		DeleteRegKey HKLM "Software\GPL Ghostscript"
 	
 		${${UN}RemovePath} "$UN_INSTDIR\${Ghostscript_Dir}\gs$UN_Ghostscript\bin"
 	${EndIf}
@@ -304,26 +310,12 @@ FunctionEnd
 	${If} $GSview != ""
 		DetailPrint "Install GSview configs"
 
-		StrCpy $0 "$INSTDIR\${GSview_Dir}"
-		WriteRegStr HKLM32 "Software\Ghostgum\GSview" "$GSview" "$0"
-	
-		StrCpy $9 "$0\gsview\gsview32.ini"
-		StrCpy $8 "GSview-$GSview"
-		StrCpy $7 "$INSTDIR\${Ghostscript_Dir}"
-		StrCpy $6 "$7\gs$Ghostscript"
-		WriteINIStr $9 "$8"	"Version" "$GSview"
-		WriteINIStr $9 "$8"	"GSversion" "864"
-		WriteINIStr $9 "$8"	"GhostscriptDLL" "$6\bin\gsdll32.dll"
-		WriteINIStr $9 "$8"	"GhostscriptInclude" "$6\lib;$7\fonts;$FONTS"
-		WriteINIStr $9 "$8"	"GhostscriptOther" '-dNOPLATFONTS -sFONTPATH="c:\psfonts"'
-		WriteINIStr $9 "$8"	"Configured" "1"
-		Delete "$PROFILE\gsview32.ini"
-	
-		${AppendPath} "$0\gsview"
-	
-		StrCpy $9 "$0\gsview\gsview32.exe"
-		!insertmacro APP_ASSOCIATE "ps" "CTeX.PS" "PS $(Desc_File)" "$9,3" "Open with GSview" '$9 "%1"'
-		!insertmacro APP_ASSOCIATE "eps" "CTeX.EPS" "EPS $(Desc_File)" "$9,3" "Open with GSview" '$9 "%1"'
+		StrCpy $0 "$INSTDIR\${GSview_Dir}\gsview$GSview"
+		WriteRegStr HKLM "Software\Artifex Software\gsview\$GSview" "" "$0"
+			
+		StrCpy $9 "$0\bin\gsview.exe"
+		!insertmacro APP_ASSOCIATE "ps" "CTeX.PS" "PS $(Desc_File)" "$0\resources\pagePS.ico" "Open with GSview" '$9 "%1"'
+		!insertmacro APP_ASSOCIATE "eps" "CTeX.EPS" "EPS $(Desc_File)" "$0\resources\pageEPS.ico" "Open with GSview" '$9 "%1"'
 	${EndIf}
 !macroend
 
@@ -331,7 +323,11 @@ FunctionEnd
 	${If} $UN_GSview != ""
 		DetailPrint "Uninstall GSview configs"
 
-		DeleteRegKey HKLM32 "Software\Ghostgum"
+		DeleteRegKey HKLM "Software\Artifex Software\gsview"
+		EnumRegKey $0 HKLM "Software\Artifex Software" "0"
+		${If} $0 == ""
+			DeleteRegKey HKLM "Software\Artifex Software"
+		${EndIf}
 	
 		${${UN}RemovePath} "$UN_INSTDIR\${GSview_Dir}\gsview"
 	
@@ -411,7 +407,7 @@ FunctionEnd
 	WriteRegStr HKLM "$9" "URLInfoAbout" "http://www.ctex.org"
 	WriteRegStr HKLM "$9" "UninstallString" "$INSTDIR\Uninstall.exe"
 
-	StrCpy $9 "$INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR"
+	StrCpy $9 "$INSTDIR\${MiKTeX_Dir}\miktex\$MiKTeX_BIN"
 	DetailPrint "Update MiKTeX file name database"
 	${ExeCmd} "$9\miktex.exe" "--admin --disable-installer --verbose fndb refresh"
 	${ExeCmd} "$9\miktex.exe" "--disable-installer --verbose fndb refresh"
@@ -655,12 +651,29 @@ FunctionEnd
 !macro Get_X64_Settings
 	${If} ${RunningX64}
 		SetRegView 64
-		StrCpy $BINDIR "bin\x64"
+		StrCpy $MiKTeX_BIN "bin\x64"
 		StrCpy $MiKTeX_Setup ${MiKTeX_Setup64}
+		StrCpy $Ghostscript_DLL "gsdll64.dll"
 	${Else}
 		SetRegView 32
-		StrCpy $BINDIR "bin"
+		StrCpy $MiKTeX_BIN "bin"
 		StrCpy $MiKTeX_Setup ${MiKTeX_Setup32}
+		StrCpy $Ghostscript_DLL "gsdll32.dll"
+	${EndIf}
+!macroend
+
+!macro Section_Select_X64 SectionMain SectionX64 SectionX86
+	${If} ${SectionIsSelected} ${SectionMain}
+		${If} ${RunningX64}
+			!insertmacro SelectSection ${SectionX64}
+			!insertmacro UnselectSection ${SectionX86}
+		${Else}
+			!insertmacro UnselectSection ${SectionX64}
+			!insertmacro SelectSection ${SectionX86}
+		${EndIf}
+	${Else}
+		!insertmacro UnselectSection ${SectionX64}
+		!insertmacro UnselectSection ${SectionX86}
 	${EndIf}
 !macroend
 
@@ -697,7 +710,7 @@ FunctionEnd
 	DetailPrint "Update MiKTeX packages"
 	${If} $MiKTeX != ""
 		MessageBox MB_YESNO|MB_ICONQUESTION "$(Msg_UpdateMiKTeX)" /SD IDNO IDNO jumpNoUpdate
-			${ExeCmd} "$INSTDIR\${MiKTeX_Dir}\miktex\$BINDIR\miktex.exe" "--admin --disable-installer --verbose packages update"
+			${ExeCmd} "$INSTDIR\${MiKTeX_Dir}\miktex\$MiKTeX_BIN\miktex.exe" "--admin --disable-installer --verbose packages update"
 		jumpNoUpdate:
 	${EndIf}
 !macroend
