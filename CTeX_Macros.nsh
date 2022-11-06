@@ -517,7 +517,7 @@ FunctionEnd
 		!insertmacro Section_Select_X64 ${Section_MiKTeX} ${Section_MiKTeX_x64} ${Section_MiKTeX_x86}
 	${EndIf}
 	${If} $Addons != ""
-		!insertmacro SelectSection ${Section_Addons}
+		!insertmacro Section_Select_X64 ${Section_Addons} ${Section_Addons_x64} ${Section_Addons_x86}
 	${EndIf}
 	${If} $Ghostscript != ""
 		!insertmacro Section_Select_X64 ${Section_Ghostscript} ${Section_Ghostscript_x64} ${Section_Ghostscript_x86}
@@ -535,6 +535,8 @@ FunctionEnd
 	!insertmacro SetSectionFlag ${Section_MiKTeX_x64} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_MiKTeX_x86} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_Addons} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_Addons_x64} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_Addons_x86} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_Ghostscript} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_Ghostscript_x64} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_Ghostscript_x86} ${SF_RO}

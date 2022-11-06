@@ -42,6 +42,8 @@ BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 !define OutFile "CTeX_${APP_BUILD}${OutFileS1}${OutFileS2}.exe"
 
 !ifdef BUILD_REPAIR
+	!undef Include_Files_x64
+	!undef Include_Files_x86
 	!define /redef InstallDir "$EXEDIR"
 	!define /redef OutFile "Repair.exe"
 !endif
@@ -89,18 +91,14 @@ Section -InitSection
 
 	Call SectionInit
 
-SectionEnd	
-
-Section "MiKTeX" Section_MiKTeX
 SectionEnd
 
-Section "-MiKTeX_x64" Section_MiKTeX_x64
+Section "-MiKTeX x64" Section_MiKTeX_x64
 
 !ifdef Include_Files_x64
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
 
-!ifndef BUILD_REPAIR
 !ifndef BUILD_FULL
 	${Install_Files} "MiKTeX.basic\*.*" "install_miktex.log"
 !else
@@ -108,18 +106,14 @@ Section "-MiKTeX_x64" Section_MiKTeX_x64
 !endif
 !endif
 
-	!insertmacro Install_Config_MiKTeX
-!endif
-
 SectionEnd
 
-Section "-MiKTeX_x86" Section_MiKTeX_x86
+Section "-MiKTeX x86" Section_MiKTeX_x86
 
 !ifdef Include_Files_x86
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
 
-!ifndef BUILD_REPAIR
 !ifndef BUILD_FULL
 	${Install_Files} "MiKTeX.basic-x86\*.*" "install_miktex.log"
 !else
@@ -127,7 +121,32 @@ Section "-MiKTeX_x86" Section_MiKTeX_x86
 !endif
 !endif
 
+SectionEnd
+
+Section "MiKTeX" Section_MiKTeX
+
 	!insertmacro Install_Config_MiKTeX
+
+SectionEnd
+
+Section "-CTeX Addons x64" Section_Addons_x64
+
+!ifdef Include_Files_x64
+	SetOverwrite On
+	SetOutPath "$INSTDIR\${Addons_Dir}"
+
+	${Install_Files} "Addons\x64\*.*" "install_addons.log"
+!endif
+
+SectionEnd
+
+Section "-CTeX Addons x86" Section_Addons_x86
+
+!ifdef Include_Files_x86
+	SetOverwrite On
+	SetOutPath "$INSTDIR\${Addons_Dir}"
+
+	${Install_Files} "Addons\x86\*.*" "install_addons.log"
 !endif
 
 SectionEnd
@@ -138,21 +157,11 @@ Section "CTeX Addons" Section_Addons
 	SetOutPath "$INSTDIR\${Addons_Dir}"
 
 !ifndef BUILD_REPAIR
-	${Install_Files} "Addons\CTeX\*.*" "install_addons.log"
+	${Install_Files_A} "Addons\CTeX\*.*" "install_addons.log"
 	${Install_Files_A} "Addons\CJK\*.*" "install_addons.log"
 	${Install_Files_A} "Addons\CCT\*.*" "install_addons.log"
 	${Install_Files_A} "Addons\TY\*.*" "install_addons.log"
 	${Install_Files_A} "Addons\Packages\*.*" "install_addons.log"
-
-	${If} ${RunningX64}
-!ifdef Include_Files_x64
-		${Install_Files_A} "Addons\x64\*.*" "install_addons.log"
-!endif
-	${Else}
-!ifdef Include_Files_x86
-		${Install_Files_A} "Addons\x86\*.*" "install_addons.log"
-!endif
-	${EndIf}
 !endif
 
 	!insertmacro Install_Config_Addons
@@ -165,69 +174,59 @@ Section "CTeX Addons" Section_Addons
 
 SectionEnd
 
-Section "Ghostscript" Section_Ghostscript
-SectionEnd
-
-Section "-Ghostscript_x64" Section_Ghostscript_x64
+Section "-Ghostscript x64" Section_Ghostscript_x64
 
 !ifdef Include_Files_x64
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${Ghostscript_Dir}"
 
-!ifndef BUILD_REPAIR
 	${Install_Files} "Ghostscript\*.*" "install_ghostscript.log"
-!endif
-
-	!insertmacro Install_Config_Ghostscript
 !endif
 
 SectionEnd
 
-Section "-Ghostscript_x86" Section_Ghostscript_x86
+Section "-Ghostscript x86" Section_Ghostscript_x86
 
 !ifdef Include_Files_x86
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${Ghostscript_Dir}"
 
-!ifndef BUILD_REPAIR
 	${Install_Files} "Ghostscript-x86\*.*" "install_ghostscript.log"
 !endif
 
+SectionEnd
+
+Section "Ghostscript" Section_Ghostscript
+
 	!insertmacro Install_Config_Ghostscript
+
+SectionEnd
+
+Section "-GSview x64" Section_GSview_x64
+
+!ifdef Include_Files_x64
+	SetOverwrite on
+	SetOutPath "$INSTDIR\${GSview_Dir}"
+
+	${Install_Files} "GSview\*.*" "install_gsview.log"
+!endif
+
+SectionEnd
+
+Section "-GSview x86" Section_GSview_x86
+
+!ifdef Include_Files_x86
+	SetOverwrite on
+	SetOutPath "$INSTDIR\${GSview_Dir}"
+
+	${Install_Files} "GSview-x86\*.*" "install_gsview.log"
 !endif
 
 SectionEnd
 
 Section "GSview" Section_GSview
-SectionEnd
-
-Section "-GSview_x64" Section_GSview_x64
-
-!ifdef Include_Files_x64
-	SetOverwrite on
-	SetOutPath "$INSTDIR\${GSview_Dir}"
-
-!ifndef BUILD_REPAIR
-	${Install_Files} "GSview\*.*" "install_gsview.log"
-!endif
 
 	!insertmacro Install_Config_GSview
-!endif
-
-SectionEnd
-
-Section "-GSview_x86" Section_GSview_x86
-
-!ifdef Include_Files_x86
-	SetOverwrite on
-	SetOutPath "$INSTDIR\${GSview_Dir}"
-
-!ifndef BUILD_REPAIR
-	${Install_Files} "GSview-x86\*.*" "install_gsview.log"
-!endif
-
-	!insertmacro Install_Config_GSview
-!endif
 
 SectionEnd
 
@@ -351,6 +350,7 @@ FunctionEnd
 
 Function .onSelChange
 	!insertmacro Section_Change_X64 ${Section_MiKTeX} ${Section_MiKTeX_x64} ${Section_MiKTeX_x86}
+	!insertmacro Section_Change_X64 ${Section_Addons} ${Section_Addons_x64} ${Section_Addons_x86}
 	!insertmacro Section_Change_X64 ${Section_Ghostscript} ${Section_Ghostscript_x64} ${Section_Ghostscript_x86}
 	!insertmacro Section_Change_X64 ${Section_GSview} ${Section_GSview_x64} ${Section_GSview_x86}
 FunctionEnd
