@@ -230,14 +230,33 @@ Section "GSview" Section_GSview
 
 SectionEnd
 
-Section "WinEdt" Section_WinEdt
+Section "-WinEdt x64" Section_WinEdt_x64
 
+!ifdef Include_Files_x64
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${WinEdt_Dir}"
 
 !ifndef BUILD_REPAIR
 	${Install_Files} "WinEdt\*.*" "install_winedt.log"
 !endif
+!endif
+
+SectionEnd	
+
+Section "-WinEdt x86" Section_WinEdt_x86
+
+!ifdef Include_Files_x86
+	SetOverwrite on
+	SetOutPath "$INSTDIR\${WinEdt_Dir}"
+
+!ifndef BUILD_REPAIR
+	${Install_Files} "WinEdt-x86\*.*" "install_winedt.log"
+!endif
+!endif
+
+SectionEnd	
+
+Section "WinEdt" Section_WinEdt
 
 	!insertmacro Install_Config_WinEdt
 
@@ -353,6 +372,7 @@ Function .onSelChange
 	!insertmacro Section_Change_X64 ${Section_Addons} ${Section_Addons_x64} ${Section_Addons_x86}
 	!insertmacro Section_Change_X64 ${Section_Ghostscript} ${Section_Ghostscript_x64} ${Section_Ghostscript_x86}
 	!insertmacro Section_Change_X64 ${Section_GSview} ${Section_GSview_x64} ${Section_GSview_x86}
+	!insertmacro Section_Change_X64 ${Section_WinEdt} ${Section_WinEdt_x64} ${Section_WinEdt_x86}
 FunctionEnd
 
 Function SectionInit

@@ -526,7 +526,7 @@ FunctionEnd
 		!insertmacro Section_Select_X64 ${Section_GSview} ${Section_GSview_x64} ${Section_GSview_x86}
 	${EndIf}
 	${If} $WinEdt != ""
-		!insertmacro SelectSection ${Section_WinEdt}
+		!insertmacro Section_Select_X64 ${Section_WinEdt} ${Section_WinEdt_x64} ${Section_WinEdt_x86}
 	${EndIf}
 !macroend
 
@@ -544,6 +544,8 @@ FunctionEnd
 	!insertmacro SetSectionFlag ${Section_GSview_x64} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_GSview_x86} ${SF_RO}
 	!insertmacro SetSectionFlag ${Section_WinEdt} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_WinEdt_x64} ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_WinEdt_x86} ${SF_RO}
 !macroend
 
 !macro Update_Install_Information

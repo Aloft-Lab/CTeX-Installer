@@ -23,7 +23,7 @@
 本套装软件包中含有如下软件：
 
         MiKTeX 2.9
-        WinEdt 7.0
+        WinEdt 11.0 (64-bit) / 10.3 (32-bit)
         GSview 6.0
         Ghostscript 10.00.0
 
