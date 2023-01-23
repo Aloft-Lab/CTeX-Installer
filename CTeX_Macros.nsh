@@ -24,6 +24,7 @@ Var SMCTEX
 Var MiKTeX_BIN
 Var MiKTeX_Setup
 Var Ghostscript_DLL
+Var WinEdt_Version
 
 !macro _ExeCmdQ Command Options
 	DetailPrint 'Executing: ${Command} ${Options}'
@@ -340,12 +341,9 @@ FunctionEnd
 	${If} $WinEdt != ""
 		DetailPrint "Install WinEdt configs"
 
-		RMDir /r "$APPDATA\WinEdt"
+		RMDir /r "$APPDATA\WinEdt Team"
 
 		StrCpy $0 "$INSTDIR\${WinEdt_Dir}"
-		WriteRegStr HKLM32 "Software\WinEdt" "Install Root" "$0"
-		WriteRegStr HKLM32 "Software\WinEdt" "AppData" "$0\Local"
-		WriteRegStr HKCU32 "Software\VB and VBA Program Settings\TexFriend\Options" "StartupByWinEdt" "False"
 
 		${AppendPath} "$0"
 	
@@ -369,16 +367,18 @@ FunctionEnd
 	${If} $UN_WinEdt != ""
 		DetailPrint "Uninstall WinEdt configs"
 
-		DeleteRegKey HKLM32 "Software\WinEdt"
-		DeleteRegKey HKCU32 "Software\VB and VBA Program Settings\TexFriend"
+		DeleteRegKey HKCU "Software\WinEdt"
+		DeleteRegKey HKCU "Software\WinEdt 10"
+		DeleteRegKey HKCU "Software\WinEdt 11"
 	
 		${${UN}RemovePath} "$UN_INSTDIR\${WinEdt_Dir}"
 
 		!insertmacro APP_UNASSOCIATE "tex" "CTeX.TeX"
 
-		RMDir /r "$APPDATA\WinEdt"
+		RMDir /r "$APPDATA\WinEdt Team"
 
 		Delete "$SMCTEX\WinEdt.lnk"
+		Delete "$UN_INSTDIR\${WinEdt_Dir}\WinEdt.skd"
 	${EndIf}
 !macroend
 
@@ -508,7 +508,7 @@ FunctionEnd
 		StrCpy $Addons ${MiKTeX_Version}
 		StrCpy $Ghostscript ${Ghostscript_Version}
 		StrCpy $GSview ${GSview_Version}
-		StrCpy $WinEdt ${WinEdt_Version}
+		StrCpy $WinEdt "$WinEdt_Version"
 	${EndIf}
 !macroend
 
@@ -563,7 +563,7 @@ FunctionEnd
 		StrCpy $GSview ${GSview_Version}
 	${EndIf}
 	${If} ${SectionIsSelected} ${Section_WinEdt}
-		StrCpy $WinEdt ${WinEdt_Version}
+		StrCpy $WinEdt "$WinEdt_Version"
 	${EndIf}
 !macroend
 
@@ -586,7 +586,7 @@ FunctionEnd
 		StrCpy $UN_Addons ${MiKTeX_Version}
 		StrCpy $UN_Ghostscript ${Ghostscript_Version}
 		StrCpy $UN_GSview ${GSview_Version}
-		StrCpy $UN_WinEdt ${WinEdt_Version}
+		StrCpy $UN_WinEdt "$WinEdt_Version"
 	${EndIf}
 !macroend
 
@@ -655,11 +655,13 @@ FunctionEnd
 		StrCpy $MiKTeX_BIN "bin\x64"
 		StrCpy $MiKTeX_Setup ${MiKTeX_Setup64}
 		StrCpy $Ghostscript_DLL "gsdll64.dll"
+		StrCpy $WinEdt_Version ${WinEdt_Version64}
 	${Else}
 		SetRegView 32
 		StrCpy $MiKTeX_BIN "bin"
 		StrCpy $MiKTeX_Setup ${MiKTeX_Setup32}
 		StrCpy $Ghostscript_DLL "gsdll32.dll"
+		StrCpy $WinEdt_Version ${WinEdt_Version32}
 	${EndIf}
 !macroend
 
