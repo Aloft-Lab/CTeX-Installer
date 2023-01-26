@@ -1,9 +1,11 @@
 ﻿
 ; Use compression
 !ifdef BUILD_FULL
+	OutFileMode auto
 	SetCompressor /FINAL LZMA
 	SetCompressorDictSize 128
 !else
+	OutFileMode aio
 	SetCompressor /FINAL /SOLID LZMA
 	SetCompressorDictSize 128
 !endif
@@ -28,16 +30,16 @@ BrandingText "${APP_NAME} ${APP_BUILD} (C) ${APP_COMPANY}"
 
 !define OutFileS1
 !define OutFileS2
+!ifdef BUILD_FULL
+	!define /redef OutFileS1 "_Full"
+!endif
 !ifdef BUILD_X64_ONLY
 	!undef Include_Files_x86
-	!define /redef OutFileS1 "_x64"
+	!define /redef OutFileS2 "_x64"
 !endif
 !ifdef BUILD_X86_ONLY
 	!undef Include_Files_x64
-	!define /redef OutFileS1 "_x86"
-!endif
-!ifdef BUILD_FULL
-	!define /redef OutFileS2 "_Full"
+	!define /redef OutFileS2 "_x86"
 !endif
 !define OutFile "CTeX_${APP_BUILD}${OutFileS1}${OutFileS2}.exe"
 
