@@ -6,7 +6,7 @@
 !define APP_COMPANY "CTEX.ORG"
 !define APP_COPYRIGHT "Copyright (C) 2000-2023 ${APP_COMPANY}"
 !define APP_VERSION "3.0"
-!define APP_STAGE "0" ; 0 - alpha, 1 - beta, 2 - release
+!define APP_STAGE "1" ; 0 - alpha, 1 - beta, 2 - release
 !define APP_BUILD "${APP_VERSION}.${BUILD_NUMBER}.${APP_STAGE}"
 
 ; Components information
