@@ -59,6 +59,7 @@ setspace
 subfig
 subfigure
 tabu
+tabularray
 titlesec
 unicode-math
 wallpaper
