@@ -1,5 +1,6 @@
 ﻿
 ; Use compression
+OutFileMode aio
 SetCompressor /FINAL /SOLID LZMA
 SetCompressorDictSize 32
 
@@ -8,7 +9,7 @@ SetCompressorDictSize 32
 ; Functions and Macros
 !include "CTeX_Macros.nsh"
 
-!define Base_Version "3.0.0.0"
+!define Base_Version "3.0.215.2"
 
 ; Variables
 
@@ -47,37 +48,32 @@ Section
 	SetOverwrite on
 
 	${If} $Addons != ""
-		SetOutPath $INSTDIR\${Addons_Dir}\ctex\bin
-		${If} ${RunningX64}
-			File Addons\x64\ctex\bin\SumatraPDF.exe
-		${Else}
-			File Addons\x86\ctex\bin\SumatraPDF.exe
-		${EndIf}
+;		SetOutPath $INSTDIR\${Addons_Dir}\ctex\bin
+;		${If} ${RunningX64}
+;			File Addons\x64\ctex\bin\SumatraPDF.exe
+;		${Else}
+;			File Addons\x86\ctex\bin\SumatraPDF.exe
+;		${EndIf}
 
-;		SetOutPath $INSTDIR\${Addons_Dir}
-;		File /r Addons\CCT\*.*
-	${EndIf}
-
-	${If} $GSview != ""
-		!insertmacro Uninstall_Config_GSview ""
-		SetOutPath "$INSTDIR\${GSview_Dir}"
-		${Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_gsview.log"
-		${Install_Files} "GSview\*.*" "install_gsview.log"
+		SetOutPath $INSTDIR\${Addons_Dir}
+		File /r Addons\CCT-0.618033-2\*.*
 	${EndIf}
 	
-	${If} $Ghostscript != ""
-		!insertmacro Uninstall_Config_Ghostscript ""
-		SetOutPath "$INSTDIR\${Ghostscript_Dir}"
-		${Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_ghostscript.log"
-		${Install_Files} "Ghostscript\*.*" "install_ghostscript.log"
-	${EndIf}
+;	${If} $Ghostscript != ""
+;		!insertmacro Uninstall_Config_Ghostscript ""
+;		SetOutPath "$INSTDIR\${Ghostscript_Dir}"
+;		${Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_ghostscript.log"
+;		${Install_Files} "Ghostscript\*.*" "install_ghostscript.log"
+;	${EndIf}
 
-	${If} $WinEdt != ""
-		!insertmacro Uninstall_Config_WinEdt ""
-		SetOutPath "$INSTDIR\${WinEdt_Dir}"
-		${Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_winedt.log"
-		${Install_Files} "WinEdt\*.*" "install_winedt.log"
-	${EndIf}
+;	${If} $WinEdt != ""
+;		${If} ${RunningX64}
+;			!insertmacro Uninstall_Config_WinEdt ""
+;			SetOutPath "$INSTDIR\${WinEdt_Dir}"
+;			${Uninstall_Files} "$UN_INSTDIR\${Logs_Dir}\install_winedt.log"
+;			${Install_Files} "WinEdt\*.*" "install_winedt.log"
+;		${EndIf}
+;	${EndIf}
 
 ; Always do update
 	SetOutPath $INSTDIR
@@ -101,7 +97,7 @@ Section
 		StrCpy $GSview ${GSview_Version}
 	${EndIf}
 	${If} $WinEdt != ""
-		StrCpy $WinEdt ${WinEdt_Version}
+		StrCpy $WinEdt "$WinEdt_Version"
 	${EndIf}
 
 	!insertmacro Save_Install_Information
