@@ -5,8 +5,8 @@
 !define APP_NAME "CTeX"
 !define APP_COMPANY "CTEX.ORG"
 !define APP_COPYRIGHT "Copyright (C) 2000-2023 ${APP_COMPANY}"
-!define APP_VERSION "3.0"
-!define APP_STAGE "3" ; 0 - alpha, 1 - beta, 2 - release, 3 - update
+!define APP_VERSION "3.1"
+!define APP_STAGE "2" ; 0 - alpha, 1 - beta, 2 - release, 3 - update
 !define APP_BUILD "${APP_VERSION}.${BUILD_NUMBER}.${APP_STAGE}"
 
 ; Components information
@@ -16,11 +16,11 @@
 !define MiKTeX_Setup32      "21.6"
 !define Addons_Dir          "CTeX"
 !define Ghostscript_Dir     "Ghostscript"
-!define Ghostscript_Version "10.01.1"
+!define Ghostscript_Version "10.02.1"
 !define GSview_Dir          "GSview"
 !define GSview_Version      "6.0"
 !define WinEdt_Dir          "WinEdt"
-!define WinEdt_Version64    "11.0"
+!define WinEdt_Version64    "11.1"
 !define WinEdt_Version32    "10.3"
 !define Logs_Dir            "Logs"
 !define UserData_Dir        "UserData"

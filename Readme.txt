@@ -1,4 +1,4 @@
-﻿CTeX 3.0
+﻿CTeX 3.1
 ========
 
 目录
@@ -22,10 +22,10 @@
 
 本套装软件包中含有如下软件：
 
-        MiKTeX 23.4
+        MiKTeX 24.1
         WinEdt 11.1 (64-bit) / 10.3 (32-bit)
         GSview 6.0
-        Ghostscript 10.01.1
+        Ghostscript 10.02.1
 
 
 ====================================================
@@ -123,7 +123,7 @@ CTEX 的服务器和网络接入得到了中国运筹学会的支持。
 
 CTEX 网站提供大量的 TeX 相关软件和文档下载，以及各类新闻通讯。
 
-CTEX 网站的网址为 http://www.ctex.org
+CTEX 网站的网址为 https://ctex.org
 
 
 5.2. CTeX 中文套装
@@ -140,5 +140,5 @@ CTeX 中文套装只用于科研与学术目的，不得以任何理由用于商
 
 5.3. 联系方式
 
-主页：http://www.ctex.org
+主页：https://ctex.org
 反馈：https://github.com/Aloft-Lab/CTeX-Installer/issues

@@ -1,4 +1,5 @@
 ﻿/Addons
+/MiKTeX
 /MiKTeX.basic
 /MiKTeX.basic-x86
 /MiKTeX.full
@@ -11,7 +12,8 @@
 /WinEdt
 /WinEdt-x86
 Repair.exe
-*MiKTeX-*-X??.7z
+MiKTeX-*-X??.7z
+MiKTeX-*-X??-Full.7z
 Ghostscript-*-X??.7z
 GSview-*-X??.7z
 WinEdt-*-X??.7z

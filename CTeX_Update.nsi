@@ -9,7 +9,7 @@ SetCompressorDictSize 32
 ; Functions and Macros
 !include "CTeX_Macros.nsh"
 
-!define Base_Version "3.0.215.2"
+!define Base_Version "3.1.217.1"
 
 ; Variables
 
