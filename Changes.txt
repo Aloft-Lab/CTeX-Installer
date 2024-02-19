@@ -1,5 +1,5 @@
 ﻿2024.02.18
-  - v3.1
+  - v3.1.217.2
   - 升级 MiKTeX 20240218
   - 升级 Ghostscript 10.02.1
   - 更新 WinEdt 11.1 (64-bit) 20230519 (默认关闭QuickTeXify)
