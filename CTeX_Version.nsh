@@ -4,7 +4,7 @@
 ; Application information
 !define APP_NAME "CTeX"
 !define APP_COMPANY "CTEX.ORG"
-!define APP_COPYRIGHT "Copyright (C) 2000-2023 ${APP_COMPANY}"
+!define APP_COPYRIGHT "Copyright (C) 2000-2024 ${APP_COMPANY}"
 !define APP_VERSION "3.1"
 !define APP_STAGE "2" ; 0 - alpha, 1 - beta, 2 - release, 3 - update
 !define APP_BUILD "${APP_VERSION}.${BUILD_NUMBER}.${APP_STAGE}"
