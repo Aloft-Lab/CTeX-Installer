@@ -1,6 +1,5 @@
 ﻿
 ; Use compression
-OutFileMode aio
 SetCompressor /FINAL /SOLID LZMA
 SetCompressorDictSize 128
 

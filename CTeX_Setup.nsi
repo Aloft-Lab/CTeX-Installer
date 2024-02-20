@@ -1,11 +1,10 @@
 ﻿
 ; Use compression
 !ifdef BUILD_FULL
-	OutFileMode auto
+	OutFileMode data
 	SetCompressor /FINAL LZMA
 	SetCompressorDictSize 128
 !else
-	OutFileMode aio
 	SetCompressor /FINAL /SOLID LZMA
 	SetCompressorDictSize 128
 !endif
@@ -97,6 +96,7 @@ SectionEnd
 
 Section "-MiKTeX x64" Section_MiKTeX_x64
 
+!ifndef DEBUG_MODE
 !ifdef Include_Files_x64
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
@@ -107,11 +107,13 @@ Section "-MiKTeX x64" Section_MiKTeX_x64
 	${Install_Files} "MiKTeX.full\*.*" "install_miktex.log"
 !endif
 !endif
+!endif
 
 SectionEnd
 
 Section "-MiKTeX x86" Section_MiKTeX_x86
 
+!ifndef DEBUG_MODE
 !ifdef Include_Files_x86
 	SetOverwrite on
 	SetOutPath "$INSTDIR\${MiKTeX_Dir}"
@@ -120,6 +122,7 @@ Section "-MiKTeX x86" Section_MiKTeX_x86
 	${Install_Files} "MiKTeX.basic-x86\*.*" "install_miktex.log"
 !else
 	${Install_Files} "MiKTeX.full-x86\*.*" "install_miktex.log"
+!endif
 !endif
 !endif
 
