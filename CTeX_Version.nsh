@@ -1,5 +1,5 @@
 ﻿
-!include "CTeX_Build.nsh"
+!include "CTeX_BuildNum.nsh"
 
 ; Application information
 !define APP_NAME "CTeX"
